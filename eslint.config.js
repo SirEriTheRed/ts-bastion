@@ -20,6 +20,7 @@ export default tseslint.config(
       "reports/",
       ".husky/",
       "docs/",
+      "CHANGELOG.md",
       "**/*.cjs",
       "eslint.config.js",
       "lint-staged.config.js",
