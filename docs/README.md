@@ -2,6 +2,10 @@
 
 ---
 
+<div align="center">
+
+<img src="_media/logo.svg" alt="TS Bastion Logo" width="100%" />
+
 # TS Bastion
 
 _A TypeScript project template centered around code quality and CI/CD._
@@ -13,18 +17,86 @@ _A TypeScript project template centered around code quality and CI/CD._
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-<!-- Publishing modes:
-    Default (private:true): GitHub attestations only (SLSA L2) — dist/** + SBOM via Sigstore, no npm publish.
-    Full-security: set package.json private:false + .releaserc.json npmPublish:true + configure Trusted Publisher on npmjs.com → npm provenance (SLSA L3) via OIDC, no NPM_TOKEN needed. -->
+[Install](#installation) • [Documentation](#documentation) • [FAQ](#faq) • [Resources](#resources) • [Contributing](#contributing) • [Contact](#contact)
 
-## Publishing & Provenance
+</div>
 
-| Mode           | `package.json:private` | `.releaserc.json:npmPublish`              | npm Trusted Publisher                                                                            | Result                                                                                                            |
-| -------------- | ---------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| Default (safe) | `true`                 | `false`                                   | —                                                                                                | GitHub attestations only (SLSA L2): `dist/**` + SBOM attested via Sigstore on every release                       |
-| Full-security  | `false`                | `true` (or remove option, default `true`) | Add on npmjs.com → package Settings → Trusted Publishers → `owner/repo` + workflow `release.yml` | npm provenance (SLSA L3) via OIDC — `@semantic-release/npm` auto-publishes with provenance; no `NPM_TOKEN` needed |
+---
 
-> `publishConfig.provenance` + `.npmrc:provenance=true` are redundant but explicit. `release.yml` already has `id-token:write` + `attestations:write`; `npm pack` is validated without publishing when `private:true`. Verify attestations with `gh attestation verify --owner <owner> dist/index.js`.
+## Table of Contents
+
+- [TS Bastion](#ts-bastion)
+  - [Table of Contents](#table-of-contents)
+  - [Why TS Bastion?](#why-ts-bastion)
+    - [The problem it solves](#the-problem-it-solves)
+    - [Best for](#best-for)
+    - [How it compares](#how-it-compares)
+  - [Template Contents](#template-contents)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Quick Start](#quick-start)
+    - [Basic Usage](#basic-usage)
+  - [Usage](#usage)
+  - [External Tools (Manual Installation Required)](#external-tools-manual-installation-required)
+  - [Tooling](#tooling)
+  - [Scripts](#scripts)
+  - [Conventions](#conventions)
+  - [Dependency Graph](#dependency-graph)
+  - [API Documentation](#api-documentation)
+  - [Documentation](#documentation)
+  - [Publishing & Provenance](#publishing--provenance)
+  - [FAQ](#faq)
+  - [Resources](#resources)
+  - [Contact](#contact)
+  - [Contributing](#contributing)
+    - [Contributors](#contributors)
+  - [Thanks & Acknowledgments](#thanks--acknowledgments)
+  - [License](#license)
+  - [Technologies Used](#technologies-used)
+  - [Template Source](#template-source)
+
+---
+
+## Why TS Bastion?
+
+Most TypeScript starters give you `tsc` + a loose ESLint config and stop. You inherit configuration debt on day one — inconsistent style, no supply-chain hardening, no provenance, and no visibility into dependency health.
+
+TS Bastion is the opposite: **zero runtime dependencies, maximal guardrails**. Clone and ship without spending a week wiring quality and security.
+
+### The problem it solves
+
+- **Config fatigue** — strict `tsconfig` (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `skipLibCheck:false`) done right from the start.
+- **Quality drift** — ESLint flat config with `typescript-eslint` strict + stylistic type-checked, plus `unicorn`, `sonarjs`, `security`, `import-x`, `promise`, `regexp`, `tsdoc`, and `prettier` — enforced on pre-commit and CI.
+- **Supply-chain blind spots** — `lockfile-lint`, `osv-scanner`, `npm audit signatures`, dual SBOM (SPDX + CycloneDX), and Sigstore attestations (SLSA L2 default, SLSA L3 with npm Trusted Publisher) out of the box.
+- **CI as an afterthought** — `quality.yml`, `actionlint`, `zizmor`, and `CodeQL` (`security-extended`) are already wired and blocking.
+
+### Best for
+
+- Teams that want a **batteries-included, audit-ready** baseline without framework lock-in (API, CLI, library, or worker — single-package ESM).
+- Maintainers who need **reproducible releases** via `semantic-release` + conventional commits + provenance, with `dist/**` attested on every tag.
+- Projects where **dead code and dependency drift matter** — `knip` + `dependency-cruiser` (`no-circular`, `no-orphans`, `no-non-package-json`) + committed `dependency-graph.svg`.
+
+### How it compares
+
+| Capability            | TS Bastion                                                                                                                               | Typical TS starter / `create-*` / `tsdx`                                               |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| TypeScript strictness | `strict` + `verbatimModuleSyntax` + `exactOptionalPropertyTypes` + `noUncheckedIndexedAccess` + `skipLibCheck:false`                     | `strict:true` only; `verbatimModuleSyntax`/`exactOptionalPropertyTypes` rarely enabled |
+| Lint / style          | ESLint strict type-checked + unicorn/sonarjs/security/import-x + Prettier + `editorconfig-checker` + `cspell` + `ls-lint` + `secretlint` | ESLint `recommended` only; no filename, spell, or secret linting                       |
+| Git hygiene           | Husky + lint-staged (`eslint --fix`, `prettier --write`, `type-check` on `.ts`) + commitlint + commitizen                                | Often no hooks or only `prettier`                                                      |
+| Tests                 | Vitest `globals:true` + `@vitest/coverage-v8` with **80%** thresholds (lines/functions/branches/statements)                              | Jest/Vitest without thresholds or coverage gate                                        |
+| Dead code / deps      | `knip` + `dependency-cruiser` (`err-long`, `err-html`, `dot` graph)                                                                      | Not included                                                                           |
+| Workflow security     | `actionlint` + `zizmor` (SARIF → Code scanning) + `CodeQL` `security-extended`                                                           | Not included                                                                           |
+| Supply chain          | `lockfile-lint` + `osv-scanner` (SARIF) + `npm audit signatures` + SBOM SPDX/CycloneDX + Sigstore attestations (SLSA L2/L3)              | At most `npm audit`                                                                    |
+| Releases              | `semantic-release` (`changelog`/`git`/`npm`) + `provenance:true` + Trusted Publisher (no `NPM_TOKEN`)                                    | Manual `npm publish` or basic `semantic-release`                                       |
+| Docs                  | TypeDoc markdown (committed `docs/`) + HTML (`reports/docs/`) from TSDoc                                                                 | README only                                                                            |
+| Runtime deps          | **0** — add only what you need                                                                                                           | Often ships with scaffolding deps                                                      |
+
+> **Trade-off:** TS Bastion is intentionally strict. If you want a permissive, unopinionated starter, this will feel opinionated — by design. Strictness is the feature.
+
+[↑ Back to top](#table-of-contents)
+
+---
 
 ## Template Contents
 
@@ -224,11 +296,135 @@ quickstart, API reference, and guides:
 
 Run `npm run docs` to regenerate.
 
+[↑ Back to top](#table-of-contents)
+
+---
+
+<!-- Publishing modes:
+    Default (private:true): GitHub attestations only (SLSA L2) — dist/** + SBOM via Sigstore, no npm publish.
+    Full-security: set package.json private:false + .releaserc.json npmPublish:true + configure Trusted Publisher on npmjs.com → npm provenance (SLSA L3) via OIDC, no NPM_TOKEN needed. -->
+
+## Publishing & Provenance
+
+| Mode           | `package.json:private` | `.releaserc.json:npmPublish`              | npm Trusted Publisher                                                                            | Result                                                                                                            |
+| -------------- | ---------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Default (safe) | `true`                 | `false`                                   | —                                                                                                | GitHub attestations only (SLSA L2): `dist/**` + SBOM attested via Sigstore on every release                       |
+| Full-security  | `false`                | `true` (or remove option, default `true`) | Add on npmjs.com → package Settings → Trusted Publishers → `owner/repo` + workflow `release.yml` | npm provenance (SLSA L3) via OIDC — `@semantic-release/npm` auto-publishes with provenance; no `NPM_TOKEN` needed |
+
+> `publishConfig.provenance` + `.npmrc:provenance=true` are redundant but explicit. `release.yml` already has `id-token:write` + `attestations:write`; `npm pack` is validated without publishing when `private:true`. Verify attestations with `gh attestation verify --owner <owner> dist/index.js`.
+
+[↑ Back to top](#table-of-contents)
+
+---
+
+## FAQ
+
+<details>
+<summary><strong>Is the template publishable by default? How do I enable npm provenance?</strong></summary>
+
+No. `package.json#private` is `true` and `.releaserc.json#npmPublish` is `false`, so `release.yml` only creates GitHub attestations (SLSA L2) for `dist/**` + SBOM via Sigstore. To publish with npm provenance (SLSA L3), set `private:false`, set `npmPublish:true` (or remove it, default is `true`), and configure a Trusted Publisher on npmjs.com for `owner/repo` + `release.yml` — no `NPM_TOKEN` needed. See [Publishing & Provenance](#publishing--provenance).
+
+</details>
+
+<details>
+<summary><strong>Do I need Go, zizmor, or Graphviz locally?</strong></summary>
+
+Only for specific scripts. `npm run osv*` needs Go + `osv-scanner` binary; `npm run zizmor*` needs `zizmor`; `npm run depcruise:graph` needs Graphviz `dot`. CI installs them automatically (`google/osv-scanner-action`, `zizmorcore/zizmor-action`). See [External Tools (Manual Installation Required)](#external-tools-manual-installation-required).
+
+</details>
+
+<details>
+<summary><strong>Can I relax the strict TypeScript / ESLint config?</strong></summary>
+
+Yes, but you lose the guardrails. `tsconfig.json` uses `strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, and `skipLibCheck:false`. ESLint uses `typescript-eslint` strict + stylistic type-checked plus `unicorn`, `sonarjs`, `security`, and `import-x`. Relax them in `tsconfig.json` / `eslint.config.js` if you need a permissive starter — the template is intentionally strict by design.
+
+</details>
+
+<details>
+<summary><strong>Where do reports, coverage, and SBOMs go?</strong></summary>
+
+All generated HTML/JSON is centralized in `reports/` (gitignored, cleaned by `npm run cleanup`): `reports/coverage`, `reports/sbom/sbom.spdx.json` + `sbom.cyclonedx.json`, `reports/osv-report.html`, `reports/zizmor.sarif`, `reports/depcruiser`, plus `reports/docs` for TypeDoc HTML. The committed `docs/*.md` is the markdown API docs and `dependency-graph.svg` stays at the repo root.
+
+</details>
+
+[![Ask a question](https://img.shields.io/badge/Ask%20a%20question-8A2BE2)](https://github.com/SirEriTheRed/ts-bastion/discussions/new/choose)
+
+[↑ Back to top](#table-of-contents)
+
+---
+
+## Resources
+
+- [TypeScript](https://www.typescriptlang.org/docs/) — strict language, docs and handbook
+- [ESLint](https://eslint.org/docs/latest/use/getting-started) — pluggable linter
+- [typescript-eslint](https://typescript-eslint.io/getting-started/) — ESLint for TypeScript (strict + stylistic type-checked)
+- [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn) — opinionated best-practices
+- [eslint-plugin-sonarjs](https://github.com/SonarSource/eslint-plugin-sonarjs) — code-quality / bug detection
+- [eslint-plugin-security](https://github.com/eslint-community/eslint-plugin-security) — security-focused rules
+- [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x) — import ordering & `no-default-export`
+- [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) — disables conflicting ESLint rules
+- [Prettier](https://prettier.io/docs/en/) — opinionated formatter
+- [Vitest](https://vitest.dev/guide/) + [@vitest/coverage-v8](https://vitest.dev/guide/coverage) — unit tests & 80% coverage gate
+- [Knip](https://knip.dev/overview/getting-started) — dead-code & unused export detection
+- [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) — dependency validation (`no-circular`, `no-orphans`) & graph
+- [Graphviz](https://graphviz.org/documentation/) — `dot` for `dependency-graph.svg`
+- [Husky](https://typicode.github.io/husky/) + [lint-staged](https://github.com/lint-staged/lint-staged) — pre-commit hooks (`eslint --fix`, `prettier --write`, `type-check`)
+- [commitlint](https://commitlint.js.org/guides/getting-started) + [commitizen](http://commitizen.github.io/cz-cli/) — conventional commits
+- [semantic-release](https://semantic-release.org/) — automated versioning, changelog, and releases with provenance
+- [TypeDoc](https://typedoc.org/guides/installation/) + [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown) — TSDoc → markdown/HTML (`docs/`, `reports/docs`)
+- [CSpell](https://cspell.org/) — spell checking
+- [lockfile-lint](https://github.com/lirantal/lockfile-lint) — lockfile integrity & allowed hosts
+- [ls-lint](https://github.com/loeffel-io/ls-lint) — filename kebab-case enforcement
+- [secretlint](https://github.com/secretlint/secretlint) — secrets detection
+- [editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker) — EditorConfig compliance
+- [actionlint](https://github.com/rhysd/actionlint) — GitHub Actions workflow lint + shellcheck
+- [zizmor](https://docs.zizmor.sh/) — GitHub Actions security audit (SARIF → Code scanning)
+- [osv-scanner](https://google.github.io/osv-scanner/) — vulnerability scanning (SARIF → Code scanning)
+- [CodeQL](https://docs.github.com/en/code-security/concepts/code-scanning/codeql/codeql-cli) — `security-extended` analysis
+- [Sigstore](https://docs.sigstore.dev/) / [SLSA](https://slsa.dev/) — attestations & supply-chain provenance
+
+[↑ Back to top](#table-of-contents)
+
+---
+
+## Contact
+
+- Discord: `@sirerithered`
+- GitHub: [SirEriTheRed](https://github.com/SirEriTheRed)
+- Issues: [SirEriTheRed/ts-bastion/issues](https://github.com/SirEriTheRed/ts-bastion/issues)
+- Discussions: [SirEriTheRed/ts-bastion/discussions](https://github.com/SirEriTheRed/ts-bastion/discussions)
+
+[↑ Back to top](#table-of-contents)
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please see [`CONTRIBUTING.md`](_media/CONTRIBUTING.md) for setup,
 conventions, and pull-request flow, and our
 [Community Code of Conduct](_media/CODE_OF_CONDUCT.md) (inspired by Contributor Covenant 3.0).
+
+### Contributors
+
+![Contributors](https://contrib.rocks/image?repo=SirEriTheRed/ts-bastion)
+
+[↑ Back to top](#table-of-contents)
+
+---
+
+## Thanks & Acknowledgments
+
+- [TypeScript](https://www.typescriptlang.org/) — strict type system that makes the template possible
+- [typescript-eslint](https://typescript-eslint.io/) + [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) — core quality stack
+- [Vitest](https://vitest.dev/) + [Knip](https://knip.dev/) + [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) — test, dead-code, and dependency health
+- [Husky](https://typicode.github.io/husky/) / [lint-staged](https://github.com/lint-staged/lint-staged) / [commitlint](https://commitlint.js.org/) / [semantic-release](https://semantic-release.org/) — git hygiene & releases
+- [TypeDoc](https://typedoc.org/) — TSDoc documentation generation
+- [zizmor](https://docs.zizmor.sh/) / [actionlint](https://github.com/rhysd/actionlint) / [CodeQL](https://codeql.github.com/) / [osv-scanner](https://google.github.io/osv-scanner/) / [Sigstore](https://www.sigstore.dev/) — security & supply-chain hardening
+- Everyone who contributed, opened an issue, PR, or discussion — thank you!
+
+[↑ Back to top](#table-of-contents)
+
+---
 
 ## License
 
