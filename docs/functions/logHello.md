@@ -8,7 +8,7 @@
 
 > **logHello**(): `string`
 
-Defined in: [index.ts:6](https://github.com/SirEriTheRed/ts-bastion/blob/fb4a53d1888df40902afd136547fc1174bdcd86c/src/index.ts#L6)
+Defined in: [index.ts:6](https://github.com/SirEriTheRed/ts-bastion/blob/4a261fbfd3aedd4b2a23c20aac91177ef35a6443/src/index.ts#L6)
 
 Returns a greeting.
 
