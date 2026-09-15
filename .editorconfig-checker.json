@@ -1,0 +1,4 @@
+{
+  "$schema": "https://raw.githubusercontent.com/editorconfig-checker/editorconfig-checker/main/.editorconfig-checker.schema.json",
+  "Exclude": ["dependency-graph\\.svg$", "reports/", "dist/", "coverage/", "\\.nyc_output/"]
+}

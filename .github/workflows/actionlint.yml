@@ -1,0 +1,40 @@
+name: actionlint
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Download actionlint
+        id: get_actionlint
+        shell: bash
+        run: |
+          bash <(curl -sSf https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) v1.7.12
+          echo "executable=$(pwd)/actionlint" >> "$GITHUB_OUTPUT"
+      - name: Add problem matcher
+        shell: bash
+        run: echo "::add-matcher::.github/actionlint-matcher.json"
+      - name: Check workflow files
+        shell: bash
+        run: ${{ steps.get_actionlint.outputs.executable }} -color -shellcheck=/usr/bin/shellcheck -pyflakes=""

@@ -1,0 +1,195 @@
+name: Code Quality
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read # least-privilege default; docs/release override to write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+on:
+  workflow_call:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read # only needs to read repo
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 'lts/jod'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lockfile-lint
+      - run: npm run lint
+      - run: npm run lint:package
+      - run: npm run ls-lint
+      - run: npm run lint:spell
+      - run: npm run secretlint
+      - run: npm run format:check
+      - uses: editorconfig-checker/action-editorconfig-checker@52c9b3667d59817ab9d523c644ee59a70886aec1 # v3.3.0
+      - run: editorconfig-checker
+      - run: npm run package:sort -- --check
+      - run: npm run type-check
+      - run: npm run type-check:tests
+      - run: npm run test:coverage
+      - run: npx knip
+      - run: npm run depcruise
+
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: wagoid/commitlint-github-action@b948419dd99f3fd78a6548d48f94e3df7f6bf3ed # v6.2.1
+        with:
+          configFile: ./commitlint.config.cjs
+          failOnWarnings: false
+
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 'lts/jod'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - uses: google/osv-scanner-action@v2@6e4298ebc4db23e847df9b2e2de2939d6f066c67 # v2.5.1
+        with:
+          scan-args: |-
+            scan source
+            --recursive
+            --format sarif
+            --output reports/osv.sarif
+            ./
+      - uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+        if: always()
+        with:
+          sarif_file: reports/osv.sarif
+          category: osv-scanner
+      - name: Generate SBOM (SPDX + CycloneDX)
+        if: always()
+        run: npm run sbom:all
+      - name: Validate SBOM (non-blocking)
+        if: always()
+        run: npm run sbom:validate || true
+      - name: Upload SBOM artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sbom
+          path: reports/sbom/*.json
+          if-no-files-found: warn
+      - name: Submit dependency graph (SPDX)
+        if: always() && github.ref == 'refs/heads/main'
+        uses: advanced-security/spdx-dependency-submission-action@3550c8ac494aeaffdf56d7d62e8fc0f2217e52a4 # v0.3.2
+        with:
+          filePath: reports/sbom
+          filePattern: sbom.spdx.json
+      - name: Generate depcruiser HTML report (always)
+        if: always()
+        run: npm run depcruise:html || true
+      - name: Upload depcruiser HTML report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: depcruiser-report
+          path: reports/depcruiser/index.html
+          if-no-files-found: warn
+      - name: Upload OSV SARIF report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: osv-sarif
+          path: reports/osv.sarif
+          if-no-files-found: warn
+
+  audit-signatures:
+    name: Audit Signatures (informational)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 'lts/jod'
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify registry signatures (Sigstore) - non-blocking (P2)
+        id: audit-signatures
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          echo "::group::npm audit signatures"
+          npm audit signatures 2>&1 | tee reports/audit-signatures.txt || true
+          echo "::endgroup::"
+          exit 0
+      - name: Upload audit signatures log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: audit-signatures
+          path: reports/audit-signatures.txt
+          if-no-files-found: warn
+
+  docs:
+    name: Docs
+    needs: check
+    if: ${{ success() && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # needs to push regenerated docs
+    concurrency:
+      group: docs-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        # zizmor: ignore[artipacked] - needs credentials to push docs via git-auto-commit
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 'lts/jod'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run docs
+      - name: Auto-commit if changed
+        uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403 # v5.2.0
+        with:
+          commit_message: 'docs: regenerate docs [skip ci]'
+          file_pattern: docs/**
