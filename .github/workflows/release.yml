@@ -1,0 +1,55 @@
+name: Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read # least-privilege default; release job overrides
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  quality:
+    name: Quality
+    uses: ./.github/workflows/quality.yml # zizmor: ignore[self-repository]
+    permissions:
+      contents: write # required by quality:docs (push docs)
+      security-events: write # required by quality:audit (upload SARIF)
+
+  release:
+    name: Release
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # semantic-release needs to push tags/releases
+      id-token: write # OIDC for npm trusted publishing + Sigstore
+      attestations: write # Sigstore attestations
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run sbom:all
+      - name: Generate build provenance (Sigstore)
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            dist/**
+            reports/sbom/*.json
+      - run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

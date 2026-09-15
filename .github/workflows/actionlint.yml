@@ -1,0 +1,47 @@
+name: actionlint
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download actionlint
+        id: get_actionlint
+        shell: bash
+        run: |
+          bash <(curl -sSf https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.12
+          echo "executable=$(pwd)/actionlint" >> "$GITHUB_OUTPUT"
+      - name: Add problem matcher
+        shell: bash
+        run: echo "::add-matcher::.github/actionlint-matcher.json"
+      - name: Install shellcheck
+        shell: bash
+        run: |
+          if ! command -v shellcheck >/dev/null 2>&1; then
+            sudo apt-get update && sudo apt-get install -y shellcheck
+          fi
+          shellcheck --version
+      - name: Check workflow files
+        shell: bash
+        run: ${{ steps.get_actionlint.outputs.executable }} -color -shellcheck=/usr/bin/shellcheck -pyflakes=""

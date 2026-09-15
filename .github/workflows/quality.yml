@@ -1,0 +1,206 @@
+name: Code Quality
+
+concurrency:
+  group: quality-${{ github.ref }}-${{ github.event_name == 'workflow_call' && github.run_id || 'ci' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_call' }}
+
+permissions:
+  contents: read # least-privilege default; docs/release override to write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+on:
+  workflow_call:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read # only needs to read repo
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lockfile-lint
+      - run: npm run lint
+      - run: npm run lint:package
+      - run: npm run ls-lint
+      - run: npm run lint:spell
+      - run: npm run secretlint
+      - run: npm run format:check
+      - uses: editorconfig-checker/action-editorconfig-checker@52c9b3667d59817ab9d523c644ee59a70886aec1 # v3.3.0
+      - run: editorconfig-checker
+      - run: npm run package:sort -- --check
+      - run: npm run type-check
+      - run: npm run type-check:tests
+      - run: npm run test:coverage
+      - run: npx knip
+      - run: npm run depcruise
+
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - name: Validate commits
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
+          elif ! git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
+            npx commitlint --last --verbose --config ./commitlint.config.cjs
+          else
+            npx commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose --config ./commitlint.config.cjs
+          fi
+
+  audit:
+    name: Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: mkdir -p reports
+      - uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+        with:
+          scan-args: |-
+            scan source
+            --recursive
+            --format sarif
+            --output reports/osv.sarif
+            ./
+      - uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4.37.9
+        if: always()
+        with:
+          sarif_file: reports/osv.sarif
+          category: osv-scanner
+      - name: Generate SBOM (SPDX + CycloneDX)
+        if: always()
+        run: npm run sbom:all
+      - name: Validate SBOM (non-blocking)
+        if: always()
+        run: npm run sbom:validate || true
+      - name: Upload SBOM artifacts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sbom
+          path: reports/sbom/*.json
+          if-no-files-found: warn
+      - name: Submit dependency graph (SPDX)
+        if: always() && github.ref == 'refs/heads/main'
+        uses: advanced-security/spdx-dependency-submission-action@3550c8ac494aeaffdf56d7d62e8fc0f2217e52a4 # v0.3.2
+        with:
+          filePath: reports/sbom
+          filePattern: sbom.spdx.json
+      - name: Generate depcruiser HTML report (always)
+        if: always()
+        run: npm run depcruise:html || true
+      - name: Upload depcruiser HTML report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: depcruiser-report
+          path: reports/depcruiser/index.html
+          if-no-files-found: warn
+      - name: Upload OSV SARIF report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: osv-sarif
+          path: reports/osv.sarif
+          if-no-files-found: warn
+
+  audit-signatures:
+    name: Audit Signatures (informational)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify registry signatures (Sigstore) - non-blocking (P2)
+        id: audit-signatures
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          echo "::group::npm audit signatures"
+          npm audit signatures 2>&1 | tee reports/audit-signatures.txt || true
+          echo "::endgroup::"
+          exit 0
+      - name: Upload audit signatures log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: audit-signatures
+          path: reports/audit-signatures.txt
+          if-no-files-found: warn
+
+  docs:
+    name: Docs
+    needs: check
+    if: ${{ success() && (github.event_name == 'push' || github.event_name == 'workflow_call') && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # needs to push regenerated docs
+    concurrency:
+      group: docs-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        # zizmor: ignore[artipacked] - needs credentials to push docs via git-auto-commit
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run docs
+      - name: Auto-commit if changed
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        with:
+          commit_message: 'docs: regenerate docs [skip ci]'
+          file_pattern: docs/**

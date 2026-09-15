@@ -1,0 +1,73 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+dist/
+build/
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing / reports
+coverage/
+reports/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Pack
+*.tgz
+
+# Cache
+.cache/
+.eslintcache
+tmp/
+temp/
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Docs generated media duplicate — source is root README-template.md (typedoc copies linked markdown to docs/_media)
+docs/_media/
+
+# actionlint local binary (download script)
+actionlint
+actionlint.exe
+
+# Security / scanning
+codeql-db/
+*.sarif
+
+# Agents (opencode local state - uncomment if used)
+# .opencode/
+# .claude/

@@ -1,0 +1,12 @@
+npx lint-staged
+npx --no ls-lint || true
+
+if git diff --cached --name-only | grep -qE '^src/|\.dependency-cruiser\.cjs'; then
+  if command -v dot >/dev/null 2>&1; then
+    echo "Updating dependency-graph.svg..."
+    npm run depcruise:graph || true
+    git add dependency-graph.svg
+  else
+    echo "⚠ Graphviz 'dot' not found — skipping dependency-graph.svg update (install graphviz to enable)"
+  fi
+fi

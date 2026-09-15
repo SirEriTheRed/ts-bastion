@@ -1,0 +1,33 @@
+ls:
+  .dir: kebab-case
+  .js: kebab-case
+  .cjs: kebab-case
+  .mjs: kebab-case
+  .ts: kebab-case
+  .mts: kebab-case
+  .cts: kebab-case
+  .json: kebab-case
+  .yml: kebab-case
+  .yaml: kebab-case
+  .md: kebab-case | SCREAMING_SNAKE_CASE
+  .svg: kebab-case
+  .sh: kebab-case
+
+ignore:
+  - node_modules
+  - dist
+  - reports
+  - coverage
+  - .git
+  - .github
+  - .husky
+  - docs
+  - '.*'
+  - '**/.*'
+  - '**/*.png'
+  - package-lock.json
+  - LICENSE
+  - CODE_OF_CONDUCT*.md
+  - SECURITY*.md
+  - CONTRIBUTING*.md
+  - README-template.md

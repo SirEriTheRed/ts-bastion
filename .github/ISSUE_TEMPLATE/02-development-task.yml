@@ -1,0 +1,78 @@
+name: Development Task
+description: Track a development task
+title: "[Task]: "
+labels: ["task"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Brief summary of the task.
+      placeholder: Concise summary of the task.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / Motivation
+      description: Why is this task needed?
+      placeholder: Explain the context and motivation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope & Acceptance Criteria
+      description: Scope and checklist for acceptance.
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Technical Notes / Dependencies
+      description: Technical details, dependencies or implementation hints.
+      placeholder: Add technical notes if any.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Effort estimate
+      description: Estimated effort for this task.
+      options:
+        - XS
+        - S
+        - M
+        - L
+        - XL
+      default: 2
+    validations:
+      required: false
+
+  - type: input
+    id: related
+    attributes:
+      label: Related issues / PRs
+      description: Link related issues or pull requests.
+      placeholder: "#123, #456"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Confirm if applicable.
+      options:
+        - label: Tests are required / included
+          required: false
+        - label: Documentation needs to be updated
+          required: false
