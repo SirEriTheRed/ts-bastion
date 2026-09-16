@@ -1,11 +1,7 @@
 name: Release
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
-
 permissions:
-  contents: read # least-privilege default; release job overrides
+  contents: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
@@ -14,29 +10,36 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   quality:
     name: Quality
-    uses: ./.github/workflows/quality.yml # zizmor: ignore[self-repository]
+    uses: ./.github/workflows/quality.yml # zizmor: ignore[self-hosted-runner]
     permissions:
-      contents: write # required by quality:docs (push docs)
-      security-events: write # required by quality:audit (upload SARIF)
+      contents: write
+      security-events: write
 
   release:
     name: Release
     needs: quality
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
     permissions:
-      contents: write # semantic-release needs to push tags/releases
-      id-token: write # OIDC for npm trusted publishing + Sigstore
-      attestations: write # Sigstore attestations
+      contents: write
+      pull-requests: write
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          persist-credentials: false
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '24'
@@ -50,6 +53,29 @@ jobs:
           subject-path: |
             dist/**
             reports/sbom/*.json
-      - run: npm run release
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Run semantic-release (commit+tag locally, no push)
+        id: sr
+        continue-on-error: true
+        run: |
+          npx semantic-release | tee sr.log
+          VERSION=$(grep -oP 'Published release \K[0-9.]+' sr.log || grep -oP 'next release version is \K[0-9.]+' sr.log || true)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Push release branch & open PR with auto-merge
+        if: steps.sr.outputs.version != ''
+        run: |
+          VERSION="${{ steps.sr.outputs.version }}"
+          BRANCH="release/v$VERSION"
+          git checkout -B "$BRANCH"
+          git push origin "$BRANCH" --follow-tags --force-with-lease
+          NOTES=$(awk '/---/ {p=1; next} p' sr.log | head -n 200)
+          gh pr create --base main --head "$BRANCH" --title "chore(release): $VERSION" --body "$NOTES" --label release 2>/dev/null || gh pr view "$BRANCH" --json url --jq .url
+          gh pr merge --auto --merge "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
