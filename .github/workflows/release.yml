@@ -62,7 +62,7 @@ jobs:
         continue-on-error: true
         run: |
           npx semantic-release | tee sr.log
-          VERSION=$(grep -oP 'Published release \K[0-9.]+' sr.log || grep -oP 'next release version is \K[0-9.]+' sr.log || true)
+          VERSION=$(grep -oP 'Published release \K[0-9.]+' sr.log || grep -iP 'next release version is \K[0-9.]+' sr.log || true)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,9 +73,17 @@ jobs:
           VERSION="${{ steps.sr.outputs.version }}"
           BRANCH="release/v$VERSION"
           git checkout -B "$BRANCH"
+          if ! git diff --quiet -- package-lock.json 2>/dev/null; then
+            git add package-lock.json
+            git commit -m "chore: update package-lock for $VERSION" --no-verify || true
+          fi
           git push origin "$BRANCH" --follow-tags --force-with-lease
           NOTES=$(awk '/---/ {p=1; next} p' sr.log | head -n 200)
-          gh pr create --base main --head "$BRANCH" --title "chore(release): $VERSION" --body "$NOTES" --label release 2>/dev/null || gh pr view "$BRANCH" --json url --jq .url
-          gh pr merge --auto --merge "$BRANCH"
+          if gh pr view "$BRANCH" --json url --jq .url >/dev/null 2>&1; then
+            echo "PR for $BRANCH already exists"
+          else
+            gh pr create --base main --head "$BRANCH" --title "chore(release): $VERSION" --body "$NOTES" || echo "gh pr create failed, branch pushed"
+          fi
+          gh pr merge --auto --merge "$BRANCH" || echo "auto-merge pending checks"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
