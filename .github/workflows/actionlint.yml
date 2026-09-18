@@ -44,4 +44,6 @@ jobs:
           shellcheck --version
       - name: Check workflow files
         shell: bash
-        run: ${{ steps.get_actionlint.outputs.executable }} -color -shellcheck=/usr/bin/shellcheck -pyflakes=""
+        run: '"$ACTIONLINT_EXE" -color -shellcheck=/usr/bin/shellcheck -pyflakes=""'
+        env:
+          ACTIONLINT_EXE: ${{ steps.get_actionlint.outputs.executable }}
