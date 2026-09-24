@@ -166,7 +166,7 @@ export default tseslint.config(
   {
     files: ["**/*.test.ts", "**/*.spec.ts", "tests/**/*.ts"],
     plugins: { vitest },
-    settings: { vitest: { typecheck: false } },
+    settings: { vitest: { typecheck: true } },
     languageOptions: {
       globals: vitest.environments.env.globals,
       parserOptions: { project: "tsconfig.test.json", tsconfigRootDir: import.meta.dirname },
