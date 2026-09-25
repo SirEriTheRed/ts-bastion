@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2026 ts-bastion contributors
+# SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
 set -euo pipefail
 
 if ! command -v reuse >/dev/null 2>&1; then
