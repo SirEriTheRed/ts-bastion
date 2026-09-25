@@ -77,6 +77,8 @@
     "alwaysStrict",
     "allowSyntheticDefaultImports",
     "skipLibCheck",
+    "Azelann",
+    "Borde",
     "erithered",
     "sirerithered",
     "tsdx",

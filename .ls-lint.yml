@@ -27,6 +27,7 @@ ignore:
   - '**/*.png'
   - package-lock.json
   - LICENSE
+  - LICENSES
   - CODE_OF_CONDUCT*.md
   - SECURITY*.md
   - CONTRIBUTING*.md
