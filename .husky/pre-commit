@@ -1,3 +1,31 @@
+staged_new_files() {
+  git diff --cached --name-only --diff-filter=A "$@" -- . \
+    ':!LICENSE' ':!LICENSES' ':!*.license' ':!REUSE.toml' ':!docs' \
+    ':!.nvmrc' ':!.gitignore' ':!.gitattributes' ':!.editorconfig' \
+    ':!.npmrc' ':!.prettierignore' ':!.ls-lint.yml' ':!package-lock.json'
+}
+
+if command -v reuse >/dev/null 2>&1; then
+  if [ -n "$(staged_new_files)" ]; then
+    contributor=$(git config user.name || true)
+    if [ -z "$contributor" ]; then
+      contributor="ts-bastion contributors"
+    fi
+    if staged_new_files -z | xargs -0 reuse annotate \
+      --copyright "ts-bastion contributors" \
+      --license MIT \
+      --contributor "$contributor" \
+      --fallback-dot-license \
+      --skip-existing; then
+      staged_new_files -z | xargs -0 git add
+    else
+      echo "[pre-commit] reuse annotate failed — skipping header auto-add (CI will still catch missing headers)."
+    fi
+  fi
+else
+  echo "[pre-commit] 'reuse' not installed locally — skipping header auto-add (CI will still catch missing headers)."
+fi
+
 npx lint-staged
 npx --no ls-lint || true
 
