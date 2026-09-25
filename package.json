@@ -60,6 +60,8 @@
     "prepare": "husky",
     "release": "semantic-release",
     "release:dry": "semantic-release --dry-run",
+    "reuse": "reuse lint",
+    "reuse:annotate": "bash scripts/reuse-annotate.sh",
     "sbom": "mkdir -p reports/sbom && npm sbom --sbom-format spdx --package-lock-only > reports/sbom/sbom.spdx.json",
     "sbom:all": "npm run sbom && npm run sbom:cyclonedx",
     "sbom:cyclonedx": "mkdir -p reports/sbom && npm sbom --sbom-format cyclonedx --package-lock-only > reports/sbom/sbom.cyclonedx.json",

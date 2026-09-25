@@ -6,7 +6,7 @@
     "cz-conventional-changelog",
     "globals"
   ],
-  "ignoreBinaries": ["actionlint", "dot", "osv-scanner", "zizmor"],
+  "ignoreBinaries": ["actionlint", "dot", "osv-scanner", "reuse", "zizmor"],
   "rules": {
     "files": "error",
     "dependencies": "error",
