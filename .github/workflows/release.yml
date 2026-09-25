@@ -74,7 +74,7 @@ jobs:
       - name: Push release branch & open PR with auto-merge
         if: steps.sr.outputs.version != ''
         run: |
-          VERSION="${{ steps.sr.outputs.version }}"
+          VERSION="${VERSION}"
           BRANCH="release/v$VERSION"
           git checkout -B "$BRANCH"
           if ! git diff --quiet -- package-lock.json 2>/dev/null; then
@@ -91,3 +91,4 @@ jobs:
           gh pr merge --auto --merge "$BRANCH" || echo "auto-merge pending checks"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.sr.outputs.version }}
