@@ -15,7 +15,7 @@ on:
 jobs:
   quality:
     name: Quality
-    uses: $/.github/workflows/quality.yml # zizmor: ignore[self-hosted-runner]
+    uses: ./.github/workflows/quality.yml # zizmor: ignore[self-hosted-runner]
     permissions:
       contents: write
       security-events: write
