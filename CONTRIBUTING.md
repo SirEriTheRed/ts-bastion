@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 ts-bastion contributors
+SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+
+SPDX-License-Identifier: MIT
+-->
+
 # Contributing to TS Bastion
 
 Thank you for considering contributing! This document explains how to set up your environment, follow the project's conventions, and submit changes. By contributing you agree that your contributions will be licensed under the [MIT License](./LICENSE).

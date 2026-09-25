@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2026 ts-bastion contributors
+SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+
+SPDX-License-Identifier: MIT
+-->
+
 <div align="center">
 
 <img src=".github/assets/logo.svg" alt="TS Bastion Logo" width="100%" />

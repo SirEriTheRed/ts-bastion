@@ -1,4 +1,11 @@
 <!--
+SPDX-FileCopyrightText: 2026 ts-bastion contributors
+SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+
+SPDX-License-Identifier: MIT
+-->
+
+<!--
 CODE_OF_CONDUCT TEMPLATE — RADMEv2
 Design for human maintainers and AI agents.
 Instructions: Replace every [bracketed placeholder] with your project's actual values.

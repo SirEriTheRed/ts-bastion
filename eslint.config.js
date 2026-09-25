@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 ts-bastion contributors
+// SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+//
+// SPDX-License-Identifier: MIT
+
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import unicorn from "eslint-plugin-unicorn";

@@ -1,3 +1,8 @@
+// SPDX-FileCopyrightText: 2026 ts-bastion contributors
+// SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+//
+// SPDX-License-Identifier: MIT
+
 export default {
   ".github/workflows/*.{yml,yaml}": [
     "bash -c 'command -v actionlint >/dev/null 2>&1 && actionlint -color || echo \"skip actionlint (not installed)\"'",
