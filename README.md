@@ -19,6 +19,7 @@ _A TypeScript project template centered around code quality and CI/CD._
 [![license](https://img.shields.io/github/license/SirEriTheRed/ts-bastion)](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![REUSE status](https://api.reuse.software/badge/github.com/SirEriTheRed/ts-bastion)](https://api.reuse.software/info/github.com/SirEriTheRed/ts-bastion)
 
 [Install](#installation) • [Documentation](#documentation) • [FAQ](#faq) • [Resources](#resources) • [Contributing](#contributing) • [Contact](#contact)
 
@@ -48,13 +49,13 @@ _A TypeScript project template centered around code quality and CI/CD._
   - [Dependency Graph](#dependency-graph)
   - [API Documentation](#api-documentation)
   - [Documentation](#documentation)
-  - [Publishing & Provenance](#publishing--provenance)
+  - [Publishing \& Provenance](#publishing--provenance)
   - [FAQ](#faq)
   - [Resources](#resources)
   - [Contact](#contact)
   - [Contributing](#contributing)
     - [Contributors](#contributors)
-  - [Thanks & Acknowledgments](#thanks--acknowledgments)
+  - [Thanks \& Acknowledgments](#thanks--acknowledgments)
   - [License](#license)
   - [Technologies Used](#technologies-used)
   - [Template Source](#template-source)
