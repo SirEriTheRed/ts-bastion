@@ -1,10 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2026 ts-bastion contributors
-SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
-
-SPDX-License-Identifier: MIT
--->
-
 [**@erithered/ts-bastion**](../README.md)
 
 ---
@@ -15,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 > **logHello**(): `string`
 
-Defined in: [index.ts:6](https://github.com/SirEriTheRed/ts-bastion/blob/main/src/index.ts#L6)
+Defined in: [index.ts:11](https://github.com/SirEriTheRed/ts-bastion/blob/main/src/index.ts#L11)
 
 Returns a greeting.
 
