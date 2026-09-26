@@ -91,12 +91,16 @@ jobs:
           BRANCH="release/v$VERSION"
           git checkout -B "$BRANCH"
           git push -u origin "$BRANCH"
+          # GitHub ignores workflow-level overrides of the default GITHUB_* variables,
+          # so env-ci would otherwise resolve ciBranch to the triggering branch (main)
+          # and semantic-release would exit without releasing. Set it in the shell,
+          # which is not subject to that restriction.
+          export GITHUB_REF="refs/heads/$BRANCH"
           npx semantic-release --branches "$BRANCH"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
-          GITHUB_REF: refs/heads/release/v${{ steps.sr.outputs.version }}
       - name: Open release PR and enable auto-merge
         if: steps.sr.outputs.version != ''
         run: |
