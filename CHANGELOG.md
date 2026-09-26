@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.1...v1.0.2) (2026-09-26)
+
+### Bug Fixes
+
+- **ci:** align github/codeql-action steps on v4.38.1 ([d60b629](https://github.com/SirEriTheRed/ts-bastion/commit/d60b6292df0fe487f5dd3efd24a0c8feaeecc2d1))
+
 ## [1.0.1](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.0...v1.0.1) (2026-09-26)
 
 ### Bug Fixes
