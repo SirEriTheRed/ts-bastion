@@ -37,6 +37,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write
       id-token: write
       attestations: write
     steps:
@@ -115,6 +116,19 @@ jobs:
             gh pr create --base main --head "$BRANCH" --title "chore(release): $VERSION" --body "$NOTES"
           fi
           gh pr merge --auto --merge "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.sr.outputs.version }}
+      - name: Trigger CodeQL for the release branch
+        if: steps.sr.outputs.version != ''
+        run: |
+          # The release PR is created with GITHUB_TOKEN, so its pull_request
+          # event triggers no workflows and the ruleset's code_scanning rule
+          # would wait forever. workflow_dispatch is exempt from that
+          # recursion ban, so analyze the release branch explicitly; results
+          # attach to the PR head commit and satisfy the rule.
+          BRANCH="release/v$VERSION"
+          gh workflow run codeql.yml --ref "$BRANCH"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
