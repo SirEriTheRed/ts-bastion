@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.2...v1.0.3) (2026-09-26)
+
+### Bug Fixes
+
+- align all CodeQL actions to v4.38.1 ([1c175d6](https://github.com/SirEriTheRed/ts-bastion/commit/1c175d6c11265a22b89f8ea98015bf094c2d923b))
+
 ## [1.0.2](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.1...v1.0.2) (2026-09-26)
 
 ### Bug Fixes

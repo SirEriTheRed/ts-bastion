@@ -1,6 +1,6 @@
 {
   "name": "@erithered/ts-bastion",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "description": "A typescript project template centered around code quality and CI/CD",
   "keywords": [
