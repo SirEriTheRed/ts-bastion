@@ -20,7 +20,7 @@
 
 ### Reverts
 
-- Revert "chore(release.yml): modified workflow to use GitHub's dedicated self-repo syntax $/ instand of ./" because $/ no yest suported by ActionLint ([73a4a01](https://github.com/SirEriTheRed/ts-bastion/commit/73a4a01ecb571fcf8d2b5928f5d2d2cb9ead3c93))
+- Revert "chore(release.yml): modified workflow to use GitHub's dedicated self-repo syntax $/ instead of ./" because $/ is not yet supported by ActionLint ([73a4a01](https://github.com/SirEriTheRed/ts-bastion/commit/73a4a01ecb571fcf8d2b5928f5d2d2cb9ead3c93))
 
 <!--
 SPDX-FileCopyrightText: 2026 ts-bastion contributors
