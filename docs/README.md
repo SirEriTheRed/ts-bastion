@@ -1,13 +1,13 @@
+**@erithered/ts-bastion**
+
+---
+
 <!--
 SPDX-FileCopyrightText: 2026 ts-bastion contributors
 SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
 
 SPDX-License-Identifier: MIT
 -->
-
-**@erithered/ts-bastion**
-
----
 
 <div align="center">
 
@@ -23,6 +23,7 @@ _A TypeScript project template centered around code quality and CI/CD._
 [![license](https://img.shields.io/github/license/SirEriTheRed/ts-bastion)](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![REUSE status](https://api.reuse.software/badge/github.com/SirEriTheRed/ts-bastion)](https://api.reuse.software/info/github.com/SirEriTheRed/ts-bastion)
 
 [Install](#installation) • [Documentation](#documentation) • [FAQ](#faq) • [Resources](#resources) • [Contributing](#contributing) • [Contact](#contact)
 
@@ -52,13 +53,13 @@ _A TypeScript project template centered around code quality and CI/CD._
   - [Dependency Graph](#dependency-graph)
   - [API Documentation](#api-documentation)
   - [Documentation](#documentation)
-  - [Publishing & Provenance](#publishing--provenance)
+  - [Publishing \& Provenance](#publishing--provenance)
   - [FAQ](#faq)
   - [Resources](#resources)
   - [Contact](#contact)
   - [Contributing](#contributing)
     - [Contributors](#contributors)
-  - [Thanks & Acknowledgments](#thanks--acknowledgments)
+  - [Thanks \& Acknowledgments](#thanks--acknowledgments)
   - [License](#license)
   - [Technologies Used](#technologies-used)
   - [Template Source](#template-source)
@@ -173,10 +174,11 @@ listed below.
 | **osv-scanner**          | Vulnerability scanning — Go binary `github.com/google/osv-scanner/v2` (`npm run osv` local, SARIF in CI)                                              | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin` (local only) | any `npm run osv*` locally; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → Security > Code scanning (`osv:html` local-only)               |
 | **zizmor** `>=1.30`      | GitHub Actions security audit — CI via `.github/workflows/zizmor.yml` (`zizmorcore/zizmor-action@v0.6.4` → SARIF `zizmor` → Security > Code scanning) | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases`       | `npm run zizmor` / `npm run zizmor:sarif` locally; in CI auto on push/PR/schedule → Security > Code scanning (branch protection ruleset blocks PR on alert) |
 | **actionlint** `v1.7.12` | Linter workflows GitHub Actions — `actionlint -color` + shellcheck                                                                                    | `go install github.com/rhysd/actionlint/cmd/actionlint@latest` · `brew install actionlint` · script download                    | `npm run actionlint` local (recommended); CI via `.github/workflows/actionlint.yml` (blocking)                                                              |
+| **reuse** `>=6.2`        | REUSE/SPDX compliance — copyright + license header on every file — CI via `.github/workflows/quality.yml` (`fsfe/reuse-action@v6`)                    | `pipx install reuse` · `pip install reuse`                                                                                      | `npm run reuse` local (recommended); `npm run reuse:annotate` adds missing headers; CI blocking on push/PR                                                  |
 | **Graphviz** (`dot`)     | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                                                                          | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                               | `npm run depcruise:graph` only                                                                                                                              |
 | **Git** `>=2.40`         | Husky hooks, `git-auto-commit-action` (`docs` job), `semantic-release`                                                                                | https://git-scm.com/downloads                                                                                                   | always                                                                                                                                                      |
 
-> **Tip:** verify locally with `go version && osv-scanner --version && zizmor --version && dot -V`
+> **Tip:** verify locally with `go version && osv-scanner --version && zizmor --version && reuse --version && dot -V`
 
 ## Tooling
 
@@ -232,6 +234,8 @@ listed below.
 | `npm run depcruise`           | `depcruise src --output-type err-long`                                                                                                                                                       |
 | `npm run actionlint`          | `actionlint -color` — linter workflows GitHub Actions + shellcheck (`-pyflakes=""`) — local recommended (requires `actionlint` binary); CI via `.github/workflows/actionlint.yml` (blocking) |
 | `npm run actionlint:docker`   | `docker run --rm -v $(pwd):/repo --workdir /repo rhysd/actionlint:1.7.12 -color` — sans Go via Docker                                                                                        |
+| `npm run reuse`               | `reuse lint` — REUSE/SPDX compliance (requires `reuse` binary); CI via `fsfe/reuse-action@v6` in `.github/workflows/quality.yml` (blocking)                                                  |
+| `npm run reuse:annotate`      | `bash scripts/reuse-annotate.sh` — one-time backfill: adds missing SPDX headers to tracked files (review `git diff` before committing)                                                       |
 | `npm run depcruise:html`      | `depcruise src --output-type err-html` → `reports/depcruiser/index.html`                                                                                                                     |
 | `npm run depcruise:graph`     | `depcruise src --output-type dot \| dot -T svg > dependency-graph.svg` (requires Graphviz)                                                                                                   |
 | `npm run docs`                | `typedoc` — generates `docs/*.md` (committed markdown) from TSDoc                                                                                                                            |
