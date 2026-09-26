@@ -48,6 +48,14 @@ updates:
     cooldown:
       default-days: 7
     groups:
+      # Must come before `github-actions`: first matching group wins.
+      # codeql-action sub-actions (init/autobuild/analyze/upload-sarif) are
+      # separate Dependabot dependencies but must stay on the same version
+      # inside a workflow job, so they are bumped together (majors included).
+      codeql-action:
+        patterns:
+          - "github/codeql-action"
+          - "github/codeql-action/*"
       github-actions:
         patterns:
           - "*"
