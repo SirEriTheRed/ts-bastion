@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.0...v1.0.1) (2026-09-26)
+
+### Bug Fixes
+
+- **ci:** dispatch codeql for release branches ([3b22d5e](https://github.com/SirEriTheRed/ts-bastion/commit/3b22d5ea3908874aa043dc24cdcf819fe57f42c1))
+
 # 1.0.0 (2026-09-26)
 
 ### Bug Fixes
