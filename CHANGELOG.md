@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.3...v1.1.0) (2026-09-27)
+
+### Bug Fixes
+
+- **changelog:** keep title and intro at top of changelog ([74fbb29](https://github.com/SirEriTheRed/ts-bastion/commit/74fbb298918b6d7b974992ae65b34082a727bccc))
+
+### Features
+
+- **release:** publish github releases via semantic-release ([427b83b](https://github.com/SirEriTheRed/ts-bastion/commit/427b83bee11949147bd366c0c75796969cf06f33))
+
 ## [1.0.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.2...v1.0.3) (2026-09-26)
 
 ### Bug Fixes
