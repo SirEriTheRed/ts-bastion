@@ -309,7 +309,7 @@ npm run release:dry
 ## Reporting Issues
 
 - **Bug reports / feature requests:** open an issue at `https://github.com/SirEriTheRed/ts-bastion/issues/new/choose` with a clear title, reproduction steps, expected vs. actual behavior, and environment (Node/npm/OS).
-- **Questions / ideas:** use GitHub Discussions at `https://github.com/SirEriTheRed/ts-bastion/discussions` if enabled.
+- **Questions / ideas:** use GitHub Discussions at `https://github.com/SirEriTheRed/ts-bastion/discussions`.
 - Search existing issues first to avoid duplicates.
 
 ## License
