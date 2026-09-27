@@ -22,7 +22,7 @@ _A TypeScript project template centered around code quality and CI/CD._
 [![node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/SirEriTheRed/ts-bastion)](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://commitizen.github.io/cz-cli/)
 [![REUSE status](https://api.reuse.software/badge/github.com/SirEriTheRed/ts-bastion)](https://api.reuse.software/info/github.com/SirEriTheRed/ts-bastion)
 
 [Install](#installation) • [Documentation](#documentation) • [FAQ](#faq) • [Resources](#resources) • [Contributing](#contributing) • [Contact](#contact)
@@ -380,7 +380,7 @@ All generated HTML/JSON is centralized in `reports/` (gitignored, cleaned by `np
 - [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) — dependency validation (`no-circular`, `no-orphans`) & graph
 - [Graphviz](https://graphviz.org/documentation/) — `dot` for `dependency-graph.svg`
 - [Husky](https://typicode.github.io/husky/) + [lint-staged](https://github.com/lint-staged/lint-staged) — pre-commit hooks (`eslint --fix`, `prettier --write`, `type-check`)
-- [commitlint](https://commitlint.js.org/guides/getting-started) + [commitizen](http://commitizen.github.io/cz-cli/) — conventional commits
+- [commitlint](https://commitlint.js.org/guides/getting-started) + [commitizen](https://commitizen.github.io/cz-cli/) — conventional commits
 - [semantic-release](https://semantic-release.org/) — automated versioning, changelog, and releases with provenance
 - [TypeDoc](https://typedoc.org/guides/installation/) + [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown) — TSDoc → markdown/HTML (`docs/`, `reports/docs`)
 - [CSpell](https://cspell.org/) — spell checking
