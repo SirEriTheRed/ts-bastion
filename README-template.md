@@ -49,7 +49,7 @@ _[short description with important keywords in bold]_
 [![license](https://img.shields.io/github/license/[OWNER]/[REPO])](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/[OWNER]/[REPO]/badge)](https://scorecard.dev/viewer/?uri=github.com/[OWNER]/[REPO])
 [![downloads](https://img.shields.io/npm/dm/[PACKAGE_NAME])](https://www.npmjs.com/package/[PACKAGE_NAME])
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://commitizen.github.io/cz-cli/)
 
 <!-- Navigation bar — section anchors; update if you rename any heading below -->
 

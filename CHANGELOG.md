@@ -1,3 +1,7 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## [1.0.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.2...v1.0.3) (2026-09-26)
 
 ### Bug Fixes
@@ -16,7 +20,7 @@
 
 - **ci:** dispatch codeql for release branches ([3b22d5e](https://github.com/SirEriTheRed/ts-bastion/commit/3b22d5ea3908874aa043dc24cdcf819fe57f42c1))
 
-# 1.0.0 (2026-09-26)
+## [1.0.0](https://github.com/SirEriTheRed/ts-bastion/tree/v1.0.0) (2026-09-26)
 
 ### Bug Fixes
 
@@ -39,16 +43,3 @@
 ### Reverts
 
 - Revert "chore(release.yml): modified workflow to use GitHub's dedicated self-repo syntax $/ instead of ./" because $/ is not yet supported by ActionLint ([73a4a01](https://github.com/SirEriTheRed/ts-bastion/commit/73a4a01ecb571fcf8d2b5928f5d2d2cb9ead3c93))
-
-<!--
-SPDX-FileCopyrightText: 2026 ts-bastion contributors
-SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
-
-SPDX-License-Identifier: MIT
--->
-
-# Changelog
-
-All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
-
-## [Unreleased]

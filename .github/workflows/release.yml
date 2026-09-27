@@ -36,6 +36,7 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+      issues: write
       pull-requests: write
       actions: write
       id-token: write
