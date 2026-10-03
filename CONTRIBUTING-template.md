@@ -266,7 +266,7 @@ npm run type-check:tests
 npm run test:coverage
 npx knip
 npm run depcruise
-npm audit --audit-level=high
+npm audit --omit=dev --audit-level=high
 npm run depcruise:html
 ```
 
@@ -312,8 +312,8 @@ On `push` to `main`, CI's `docs` job runs `npm run docs` and auto-commits `docs/
 
 ## Security
 
-- **npm audit:** `npm audit --audit-level=high` (blocking in CI `audit` job).
-- **osv-scanner:** locally `npm run osv` (blocking) / `npm run osv:html` → `reports/osv-report.html`; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Security > Code scanning.
+- **npm audit:** `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies only). CI also runs full-tree `npm audit --audit-level=critical`, which reports every finding and blocks only on Critical.
+- **osv-scanner:** locally `npm run osv` (blocking) / `npm run osv:html` → `reports/osv-report.html`; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Security > Code scanning. Known unfixable dev-only findings are suppressed by ID in [`osv-scanner.toml`](./osv-scanner.toml); a new advisory in any of those packages still fails CI.
 - **secretlint:** `npm run secretlint` / `npm run secretlint:mask` using `@secretlint/secretlint-rule-preset-recommend` (see [.secretlintrc.json](./.secretlintrc.json)). Also runs on every commit via lint-staged — never commit secrets, tokens, or credentials.
 - **lockfile-lint:** `npm run lockfile-lint` validates `package-lock.json` (`--allowed-hosts npm --validate-https --validate-integrity --empty-hostname false`).
 - **zizmor:** optional `zizmor .` for GitHub Actions hardening.

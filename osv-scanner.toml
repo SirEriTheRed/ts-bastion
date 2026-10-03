@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: 2026 ts-bastion contributors
+# SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+# osv-scanner suppressions — https://google.github.io/osv-scanner/configuration/
+#
+# Auto-applied: this file sits next to package-lock.json, so it applies to that
+# lockfile (per-directory discovery — it does NOT propagate to child directories).
+#
+# Every entry is an advisory on a DEV-ONLY package; the production tree is empty
+# (`npm audit --omit=dev` is clean), so none of them reach runtime consumers.
+#
+# Entries are keyed by vulnerability ID rather than by package, so a NEW advisory
+# in any of these packages still fails CI and must be triaged deliberately.
+# Delete an entry once its package is no longer flagged.
+#
+# Why these five cannot be fixed here:
+#   * braces, http-cache-semantics — advisory range covers every published
+#     release (FIXED VERSION = "--"); no fixed version exists upstream.
+#   * brace-expansion, ip-address, undici — a fix exists upstream, but the only
+#     flagged copy is the one bundled inside node_modules/npm (`inBundle: true`).
+#     Root copies are already patched (brace-expansion 5.0.12, undici 6.28.1
+#     and 7.29.1); a root `overrides` entry cannot reach a bundled subtree.
+
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+reason = "braces <=3.0.3: advisory covers every published release, no fix exists. Dev-only via micromatch."
+
+[[IgnoredVulns]]
+id = "GHSA-ch52-4w7c-c8xp"
+reason = "http-cache-semantics 4.2.0: no fixed version exists; copy is bundled inside node_modules/npm. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-6j4f-fj2g-mc7p"
+reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-qhr7-859c-m2p7"
+reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-q2hr-2g5m-vwhr"
+reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-rpw4-54j3-4h4q"
+reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
+
+[[IgnoredVulns]]
+id = "GHSA-2vr4-cq9g-pvrc"
+reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
+
+[[IgnoredVulns]]
+id = "GHSA-h3mg-xc3c-68pw"
+reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
+
+[[IgnoredVulns]]
+id = "GHSA-j6r3-76f7-8jcv"
+reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
+
+[[IgnoredVulns]]
+id = "GHSA-rfgv-xxqx-mfg5"
+reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-3wwx-pv8p-q78v"
+reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-r53p-7pc4-xj5r"
+reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
