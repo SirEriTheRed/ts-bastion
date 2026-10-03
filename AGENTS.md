@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 - `.github/workflows/quality.yml` — `workflow_call` (from `release.yml`) + push (`develop`) + pull_request (`main`); jobs:
   - `check` (required): **REUSE compliance** (`fsfe/reuse-action@v6`, SHA-pinned, right after checkout) → `lockfile-lint` → `lint` → `lint:package` → `ls-lint` → `lint:spell` → `secretlint` → `format:check` → `editorconfig-checker` → `package:sort --check` → `type-check` → `type-check:tests` → `test:coverage` → `knip` → `depcruise`
   - `commitlint` (required): validates the commit range (`--from/--to` on PR, `--last` on push) with `commitlint.config.cjs`
-  - `audit`: `npm audit --audit-level=high` + `google/osv-scanner-action` SARIF → Security > Code scanning + `sbom:all` artifacts + SPDX dependency submission (`main` only) + depcruiser HTML + OSV SARIF artifacts
+  - `audit`: `npm audit --omit=dev --audit-level=high` (blocking, production dependencies) + full-tree `npm audit --audit-level=critical` (reports all findings, blocks on Critical) + `google/osv-scanner-action` SARIF (known unfixable dev-only findings suppressed by ID in `osv-scanner.toml`) → Security > Code scanning + `sbom:all` artifacts + SPDX dependency submission (`main` only) + depcruiser HTML + OSV SARIF artifacts
   - `audit-signatures`: `npm audit signatures` → `reports/audit-signatures.txt`, `continue-on-error: true`, informational (not in required checks)
   - `docs` (PR only, `needs: check`): `npm run docs` + auto-commit `docs: regenerate docs` via `git-auto-commit-action`
 - `.github/workflows/actionlint.yml` — `rhysd/actionlint` v1.7.12 (download script) + shellcheck (`-pyflakes=""`), blocking on push (main/develop) + pull_request (main) + `workflow_dispatch`/`workflow_call`
