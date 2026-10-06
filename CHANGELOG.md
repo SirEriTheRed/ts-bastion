@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.0...v1.1.1) (2026-10-06)
+
+### Bug Fixes
+
+- **quality.yml:** added continue-on-error to still create the SARIF if vulnerabilities are spotted ([17505cf](https://github.com/SirEriTheRed/ts-bastion/commit/17505cf5ca73a8dca2cd4ec4e986e083affa3771))
+- **quality.yml:** fixed options flags ([501f54e](https://github.com/SirEriTheRed/ts-bastion/commit/501f54e6e38a3840cc3dbe86d883f21fca456d7a))
+- **quality.yml:** fixed te osv audit step to omit dev dependencies ([06a9415](https://github.com/SirEriTheRed/ts-bastion/commit/06a9415902b3bcd9729789d6ef6fa7edae115be2))
+- **quality.yml:** fixed the npm audit step to omit dev dependencies ([a16adb8](https://github.com/SirEriTheRed/ts-bastion/commit/a16adb836c77fc264b90c9079e541aef9cd137eb))
+- **quality.yml:** removed omit dev from osv ([1331b7b](https://github.com/SirEriTheRed/ts-bastion/commit/1331b7b4102491afa601e3962aadcec3c765cfc6))
+- **quality.yml:** removed scan source to fix SARIF generation ([ed132b9](https://github.com/SirEriTheRed/ts-bastion/commit/ed132b91633a58f2e3a3b2010be7c9d26d660c0b))
+
 # [1.1.0](https://github.com/SirEriTheRed/ts-bastion/compare/v1.0.3...v1.1.0) (2026-09-27)
 
 ### Bug Fixes
