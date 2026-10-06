@@ -103,6 +103,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
+      - name: Generate GitHub App token for the release PR
+        id: release-pr-token
+        # A PR opened with GITHUB_TOKEN triggers no pull_request workflows
+        # (GitHub recursion prevention), so the required checks never report.
+        # Falls back to GITHUB_TOKEN until the App is configured.
+        if: ${{ vars.RELEASE_APP_CLIENT_ID != '' }}
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       - name: Open release PR and enable auto-merge
         if: steps.sr.outputs.version != ''
         run: |
@@ -118,16 +130,18 @@ jobs:
           fi
           gh pr merge --auto --merge "$BRANCH"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.release-pr-token.outputs.token || secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
       - name: Trigger CodeQL for the release branch
         if: steps.sr.outputs.version != ''
         run: |
-          # The release PR is created with GITHUB_TOKEN, so its pull_request
-          # event triggers no workflows and the ruleset's code_scanning rule
-          # would wait forever. workflow_dispatch is exempt from that
-          # recursion ban, so analyze the release branch explicitly; results
-          # attach to the PR head commit and satisfy the rule.
+          # Safety net: when the release PR is opened with GITHUB_TOKEN (App not
+          # configured), pull_request workflows never start and the ruleset's
+          # code_scanning rule would wait forever. workflow_dispatch is exempt
+          # from the recursion ban, so analyze the release branch explicitly;
+          # SARIF results attach to the PR head commit. With the App configured,
+          # the PR's own pull_request run already covers this and the dispatch
+          # only creates a harmless duplicate.
           BRANCH="release/v$VERSION"
           gh workflow run codeql.yml --ref "$BRANCH"
         env:

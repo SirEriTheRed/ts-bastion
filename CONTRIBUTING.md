@@ -291,7 +291,7 @@ Releases are fully automated by [semantic-release](https://semantic-release.org)
 
 - Commit messages drive versioning via `@semantic-release/commit-analyzer` (feat → minor, fix → patch, `BREAKING CHANGE` / `!` → major).
 - Changelog updated in [CHANGELOG.md](./CHANGELOG.md) (`@semantic-release/changelog`).
-- No npm publish (`npmPublish: false`, `private: true`) — package is not published. `@semantic-release/git` commits `package.json` + `CHANGELOG.md` with `chore(release): ${version} [skip ci]`.
+- No npm publish (`npmPublish: false`, `private: true`) — package is not published. `@semantic-release/git` commits `package.json` + `CHANGELOG.md` with `chore(release): ${version}` — deliberately **without** `[skip ci]`, because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
 - The `docs: regenerate docs [skip ci]` commit from the `docs` job is skipped by CI (`[skip ci]`).
 
 Preview locally:

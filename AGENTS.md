@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
 - `.github/workflows/zizmor.yml` — `zizmorcore/zizmor-action@v0.6.4` → SARIF `zizmor` → Security > Code scanning on push (main/develop), PR (main), schedule `0 4 * * 1`, `workflow_dispatch`/`workflow_call`; `exit 0` always (SARIF) → block via Code Scanning branch protection ruleset (Require code scanning results — `zizmor`)
 - `.github/workflows/codeql.yml` — CodeQL `javascript-typescript` (`security-extended`) on push/PR (main, master) + schedule `0 4 * * 1` + `workflow_dispatch`
 - `.github/workflows/scorecard.yml` — OpenSSF Scorecard (`ossf/scorecard-action` v2.4.4) → SARIF → Security > Code scanning; `branch_protection_rule` + push (main) + schedule `26 7 * * 2` + `workflow_dispatch`
-- `.github/workflows/release.yml` — quality ✅ → `npm run build` + `npm run sbom:all` + attestations (Sigstore via `actions/attest-build-provenance@v4.2.2`) + `npm run release` (semantic-release) on push main
+- `.github/workflows/release.yml` — quality ✅ → `npm run build` + `npm run sbom:all` + attestations (Sigstore via `actions/attest-build-provenance@v4.2.2`) + `npm run release` (semantic-release) on push main; opens the `release/vX.Y.Z` PR with a GitHub App token (`actions/create-github-app-token`, configured via `vars.RELEASE_APP_CLIENT_ID` + `secrets.RELEASE_APP_PRIVATE_KEY`, falls back to `GITHUB_TOKEN`, whose PRs trigger no `pull_request` workflows) and enables auto-merge; dispatches `codeql.yml` on the release branch so SARIF attaches to the PR head
 
 ## Commands
 
