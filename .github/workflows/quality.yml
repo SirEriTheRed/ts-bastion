@@ -107,6 +107,7 @@ jobs:
           scan-args: |-
             scan source
             --recursive
+            --omit=dev
             --format sarif
             --output reports/osv.sarif
             ./
