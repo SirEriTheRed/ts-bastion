@@ -293,6 +293,7 @@ Releases are fully automated by [semantic-release](https://semantic-release.org)
 - Changelog updated in [CHANGELOG.md](./CHANGELOG.md) (`@semantic-release/changelog`).
 - No npm publish (`npmPublish: false`, `private: true`) — package is not published. `@semantic-release/git` commits `package.json` + `CHANGELOG.md` with `chore(release): ${version}` — deliberately **without** `[skip ci]`, because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
 - The `docs: regenerate docs [skip ci]` commit from the `docs` job is skipped by CI (`[skip ci]`).
+- The workflow does **not** open the `release/vX.Y.Z` pull request itself: a PR created with `GITHUB_TOKEN` triggers no `pull_request` workflows, so its required checks would never report. The run summary instead contains a one-click **Open the release pull request** link plus the release notes to paste — open it under your own account (your event runs all checks), then enable auto-merge or merge once green.
 
 Preview locally:
 
