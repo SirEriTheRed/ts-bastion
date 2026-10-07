@@ -87,8 +87,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      contents: write
-      security-events: write
+      contents: read # checkout only
+      security-events: write # OSV SARIF upload
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -128,12 +128,6 @@ jobs:
           name: sbom
           path: reports/sbom/*.json
           if-no-files-found: warn
-      - name: Submit dependency graph (SPDX)
-        if: always() && github.ref == 'refs/heads/main'
-        uses: advanced-security/spdx-dependency-submission-action@b009efcf8b9d562a4569d2028c276522232e631f # v0.4.0
-        with:
-          filePath: reports/sbom
-          filePattern: sbom.spdx.json
       - name: Generate depcruiser HTML report (always)
         if: always()
         run: npm run depcruise:html || true
