@@ -91,8 +91,24 @@ jobs:
         if: steps.sr.outputs.version != ''
         run: |
           BRANCH="release/v$VERSION"
-          git checkout -B "$BRANCH"
-          git push -u origin "$BRANCH"
+          # A push to main while the previous release PR is still pending re-detects
+          # the same version: the tag lives only on the unmerged release branch, so
+          # the dry-run on main cannot see it. Skip publishing - the report step
+          # below is independent and idempotent (prints the PR link or enables
+          # auto-merge), so the pending release still moves forward.
+          if git ls-remote --exit-code --tags origin "refs/tags/v$VERSION" >/dev/null 2>&1; then
+            echo "v$VERSION already released - skipping publish."
+            exit 0
+          fi
+          # Reuse an existing remote release branch instead of recreating it from
+          # main: a divergent local branch makes the push non-fast-forward.
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$BRANCH"
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            git checkout -B "$BRANCH"
+            git push -u origin "$BRANCH"
+          fi
           # GitHub ignores workflow-level overrides of the default GITHUB_* variables,
           # so env-ci would otherwise resolve ciBranch to the triggering branch (main)
           # and semantic-release would exit without releasing. Set it in the shell,
