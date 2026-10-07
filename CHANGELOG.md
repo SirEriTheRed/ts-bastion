@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
+
+### Bug Fixes
+
+- **release.yml:** make release-branch publish idempotent ([ec17dbe](https://github.com/SirEriTheRed/ts-bastion/commit/ec17dbe8a2552576057f26f1dee28f17502aa40d))
+
 ## [1.1.2](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.1...v1.1.2) (2026-10-07)
 
 ### Bug Fixes
