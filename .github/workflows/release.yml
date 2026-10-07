@@ -103,31 +103,46 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
-      - name: Open release PR and enable auto-merge
+      - name: Report release PR link or enable auto-merge
         if: steps.sr.outputs.version != ''
         run: |
           BRANCH="release/v$VERSION"
-          NOTES=$(awk '/^#[#]? [0-9]+\.[0-9]+\.[0-9]+ /{p=1} p' sr.log | head -n 200)
-          if [ -z "$NOTES" ]; then
-            NOTES="Automated release of v$VERSION."
-          fi
           if gh pr view "$BRANCH" --json url --jq .url >/dev/null 2>&1; then
-            echo "PR for $BRANCH already exists"
+            echo "PR for $BRANCH already exists - enabling auto-merge."
+            gh pr merge --auto --merge "$BRANCH"
           else
-            gh pr create --base main --head "$BRANCH" --title "chore(release): $VERSION" --body "$NOTES"
+            # The workflow must not open the PR itself: a PR created with
+            # GITHUB_TOKEN triggers no pull_request workflows (GitHub recursion
+            # prevention), so its required checks would never report. A PR
+            # opened by a human does trigger them. Print a one-click link.
+            URL="https://github.com/$GITHUB_REPOSITORY/compare/main...$BRANCH?expand=1"
+            NOTES=$(awk '/^#[#]? [0-9]+\.[0-9]+\.[0-9]+ /{p=1} p' sr.log | head -n 200)
+            if [ -z "$NOTES" ]; then
+              NOTES="Automated release of v$VERSION."
+            fi
+            {
+              echo "## Release v$VERSION"
+              echo ""
+              echo "**One click needed:** [Open the release pull request]($URL),"
+              echo "then enable auto-merge (or merge once all checks are green)."
+              echo ""
+              echo "### Release notes"
+              echo ""
+              echo "$NOTES"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Open the release PR for v$VERSION::$URL"
           fi
-          gh pr merge --auto --merge "$BRANCH"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.sr.outputs.version }}
       - name: Trigger CodeQL for the release branch
         if: steps.sr.outputs.version != ''
         run: |
-          # The release PR is created with GITHUB_TOKEN, so its pull_request
-          # event triggers no workflows and the ruleset's code_scanning rule
-          # would wait forever. workflow_dispatch is exempt from that
-          # recursion ban, so analyze the release branch explicitly; results
-          # attach to the PR head commit and satisfy the rule.
+          # Analyze the release branch up front: workflow_dispatch is exempt
+          # from the recursion ban, so SARIF already exists on the head SHA by
+          # the time a human opens the PR and the ruleset's code_scanning rule
+          # evaluates it. The PR's own pull_request CodeQL run is a harmless
+          # duplicate.
           BRANCH="release/v$VERSION"
           gh workflow run codeql.yml --ref "$BRANCH"
         env:

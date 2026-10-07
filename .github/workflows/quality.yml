@@ -87,8 +87,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      contents: write
-      security-events: write
+      contents: read # checkout only
+      security-events: write # OSV SARIF upload
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -110,7 +110,7 @@ jobs:
             --format sarif
             --output reports/osv.sarif
             ./
-      - uses: github/codeql-action/upload-sarif@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4.38.1
+      - uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
         if: always()
         with:
           sarif_file: reports/osv.sarif
@@ -128,12 +128,6 @@ jobs:
           name: sbom
           path: reports/sbom/*.json
           if-no-files-found: warn
-      - name: Submit dependency graph (SPDX)
-        if: always() && github.ref == 'refs/heads/main'
-        uses: advanced-security/spdx-dependency-submission-action@b009efcf8b9d562a4569d2028c276522232e631f # v0.4.0
-        with:
-          filePath: reports/sbom
-          filePattern: sbom.spdx.json
       - name: Generate depcruiser HTML report (always)
         if: always()
         run: npm run depcruise:html || true
