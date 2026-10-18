@@ -35,7 +35,7 @@ This project follows our [Community Code of Conduct](./CODE_OF_CONDUCT.md) (insp
 
 ## Prerequisites (Development Environment Setup)
 
-- **Node.js** `>=20` (`lts/jod` recommended, see [.nvmrc](./.nvmrc))
+- **Node.js** `>=22` (`lts/jod` recommended, see [.nvmrc](./.nvmrc))
 - **npm** `>=10`
 - **Git** `>=2.40` — Husky hooks, `semantic-release`
 

@@ -108,7 +108,7 @@ Minimal yet strict template, ready to clone to start a TypeScript project (API, 
 
 ## Prerequisites
 
-- Node.js `>=20` (`lts/jod` recommended, see `.nvmrc`)
+- Node.js `>=22` (`lts/jod` recommended, see `.nvmrc`)
 - npm `>=10`
 
 ## Getting Started

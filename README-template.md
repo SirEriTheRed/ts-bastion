@@ -117,7 +117,7 @@ _[legend]_
 <!--
   Tech Stack — list each technology used. Repeat the table row for each entry.
   Example:
-  | Runtime     | Node.js     | >=20        |
+  | Runtime     | Node.js     | >=22        |
   | Framework   | Fastify     | ^5          |
 -->
 
