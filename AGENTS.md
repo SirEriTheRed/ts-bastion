@@ -56,7 +56,6 @@ SPDX-License-Identifier: MIT
 | `npm run sbom`                  | `npm sbom --sbom-format spdx --package-lock-only` → `reports/sbom/sbom.spdx.json` (GitHub)                                           |
 | `npm run sbom:cyclonedx`        | `npm sbom --sbom-format cyclonedx --package-lock-only` → `reports/sbom/sbom.cyclonedx.json`                                          |
 | `npm run sbom:all`              | `npm run sbom && npm run sbom:cyclonedx`                                                                                             |
-| `npm run sbom:validate`         | `npx @cyclonedx/cyclonedx-cli validate` → validates CycloneDX (non-blocking)                                                         |
 | `npm run zizmor`                | `zizmor .` — GitHub Actions audit (requires `zizmor`); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF → Code scanning              |
 | `npm run zizmor:sarif`          | `zizmor --format sarif . > reports/zizmor.sarif` — local SARIF preview (non-blocking)                                                |
 | `npm run actionlint`            | `actionlint -color` — linter workflows GitHub Actions + shellcheck (blocking)                                                        |

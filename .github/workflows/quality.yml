@@ -116,9 +116,6 @@ jobs:
       - name: Generate SBOM (SPDX + CycloneDX)
         if: always()
         run: npm run sbom:all
-      - name: Validate SBOM (non-blocking)
-        if: always()
-        run: npm run sbom:validate || true
       - name: Upload SBOM artifacts
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
