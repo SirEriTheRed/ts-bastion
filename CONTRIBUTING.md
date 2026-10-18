@@ -222,7 +222,7 @@ zizmor .                 # GitHub Actions audit
 zizmor --persona pedantic .
 ```
 
-CI `audit-signatures` artifact: `reports/audit-signatures.txt` (informational, `continue-on-error: true`, not a required check — see [Security](#security)).
+CI `audit-signatures` artifact: `reports/audit-signatures.txt` (informational, last step of the `audit` job, `continue-on-error: true`, not a required check — see [Security](#security)).
 
 ## Testing (Testing Requirements)
 
@@ -258,7 +258,7 @@ On `push` to `main`, CI's `docs` job runs `npm run docs` and auto-commits `docs/
 ## Security
 
 - **npm audit:** `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies only). CI also runs full-tree `npm audit --audit-level=critical`, which reports every finding and blocks only on Critical.
-- **npm audit signatures (Sigstore):** `npm run audit:signatures` strict (exits non-zero on missing/invalid) for local debug; `npm run audit:signatures:warn` (`|| true`) for CI. Standalone informational job `audit-signatures` in `quality.yml` (`continue-on-error: true`, artifact `reports/audit-signatures.txt`, not in required checks) verifies inbound registry signatures to complement outbound provenance (`.npmrc:provenance=true` + `release.yml:actions/attest-build-provenance@v4`). Non-blocking because <50% ecosystem signed in 2026 — monitor artifacts 2 weeks; promote to blocking when >90% deps signed or allowlist empty.
+- **npm audit signatures (Sigstore):** `npm run audit:signatures` strict (exits non-zero on missing/invalid) for local debug; `npm run audit:signatures:warn` (`|| true`) for CI. The last step of the CI `audit` job in `quality.yml` (`continue-on-error: true`, artifact `reports/audit-signatures.txt`, not in required checks) verifies inbound registry signatures to complement outbound provenance (`.npmrc:provenance=true` + `release.yml:actions/attest-build-provenance@v4`). Non-blocking because <50% ecosystem signed in 2026 — monitor artifacts 2 weeks; promote to blocking when >90% deps signed or allowlist empty.
 - **osv-scanner:** locally `npm run osv` (blocking) / `npm run osv:html` → `reports/osv-report.html`; in CI via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Security > Code scanning. Known unfixable dev-only findings are suppressed by ID in [`osv-scanner.toml`](./osv-scanner.toml); a new advisory in any of those packages still fails CI.
 - **secretlint:** `npm run secretlint` / `npm run secretlint:mask` using `@secretlint/secretlint-rule-preset-recommend` (see [.secretlintrc.json](./.secretlintrc.json)). Also runs on every commit via lint-staged — never commit secrets, tokens, or credentials.
 - **lockfile-lint:** `npm run lockfile-lint` validates `package-lock.json` (`--allowed-hosts npm --validate-https --validate-integrity --empty-hostname false`).
