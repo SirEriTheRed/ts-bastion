@@ -3,9 +3,7 @@
   "ignoreDependencies": [
     "@secretlint/secretlint-rule-preset-recommend",
     "@semantic-release/github",
-    "@semantic-release/npm",
-    "cz-conventional-changelog",
-    "globals"
+    "@semantic-release/npm"
   ],
   "ignoreBinaries": ["actionlint", "dot", "osv-scanner", "reuse", "zizmor"],
   "rules": {

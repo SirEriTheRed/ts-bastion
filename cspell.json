@@ -131,6 +131,7 @@
     "node_modules",
     "dist",
     "coverage",
+    "reports",
     "docs",
     "*.log",
     "package-lock.json",

@@ -15,13 +15,17 @@
 # in any of these packages still fails CI and must be triaged deliberately.
 # Delete an entry once its package is no longer flagged.
 #
-# Why these five cannot be fixed here:
+# Why these cannot be fixed here:
 #   * braces, http-cache-semantics — advisory range covers every published
 #     release (FIXED VERSION = "--"); no fixed version exists upstream.
-#   * brace-expansion, ip-address, undici — a fix exists upstream, but the only
-#     flagged copy is the one bundled inside node_modules/npm (`inBundle: true`).
-#     Root copies are already patched (brace-expansion 5.0.12, undici 6.28.1
-#     and 7.29.1); a root `overrides` entry cannot reach a bundled subtree.
+#   * brace-expansion, ip-address, postcss-selector-parser, undici — a fix
+#     exists upstream, but the only flagged copy is the one bundled inside
+#     node_modules/npm (`inBundle: true`). Root copies are already patched
+#     (brace-expansion 5.0.12, undici 6.28.1 and 7.29.1); a root `overrides`
+#     entry or `npm update <pkg>` cannot reach a bundled subtree.
+#   * katex — fix exists only in 0.18.2, but micromark-extension-math@3.1.0
+#     (latest) pins katex ^0.16.0 and @eslint/markdown@8.0.3 is current.
+#     Upgrade path: an npm `overrides` entry once the parent widens its range.
 
 [[IgnoredVulns]]
 id = "GHSA-vfj7-8cjw-p6xm"
@@ -70,3 +74,11 @@ reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.
 [[IgnoredVulns]]
 id = "GHSA-r53p-7pc4-xj5r"
 reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
+
+[[IgnoredVulns]]
+id = "GHSA-238p-pmpm-9mq7"
+reason = "katex 0.16.47: only fixed in 0.18.2, but micromark-extension-math@3.1.0 (latest) pins katex ^0.16.0. Dev-only markdown math linting (CVSS 2.1)."
+
+[[IgnoredVulns]]
+id = "GHSA-rj75-hqrm-r3gf"
+reason = "postcss-selector-parser 7.1.4 is bundled inside node_modules/npm (npm update is a no-op); 7.1.6 exists upstream but is unreachable. Dev-only."

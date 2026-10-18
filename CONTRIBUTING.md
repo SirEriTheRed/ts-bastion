@@ -37,7 +37,7 @@ This project follows our [Community Code of Conduct](./CODE_OF_CONDUCT.md) (insp
 
 - **Node.js** `>=20` (`lts/jod` recommended, see [.nvmrc](./.nvmrc))
 - **npm** `>=10`
-- **Git** `>=2.40` — Husky hooks, `semantic-release`, docs auto-commit
+- **Git** `>=2.40` — Husky hooks, `semantic-release`
 
 ### External Tools (Manual Installation Required)
 
@@ -109,7 +109,7 @@ Examples:
 ```bash
 feat: add pagination to list endpoint
 fix(api): handle null cursor in search
-docs: regenerate docs [skip ci]
+docs: clarify release notes section
 chore(deps): bump typescript to 5.9.3
 ```
 
@@ -251,7 +251,7 @@ npm run docs:html   # → reports/docs/index.html (gitignored, browsable)
 npm run docs:watch  # watch mode
 ```
 
-On `push` to `main`, CI's `docs` job runs `npm run docs` and auto-commits `docs/**` with `docs: regenerate docs [skip ci]` if changed.
+During the release on `push` to `main`, `release.yml` runs `npm run docs` on the release branch and `@semantic-release/git` commits `docs/**` with the release commit.
 
 - **Dependency graph:** rules in [.dependency-cruiser.cjs](./.dependency-cruiser.cjs). The committed [dependency-graph.svg](./dependency-graph.svg) is auto-regenerated on pre-commit when `src/` changes (requires Graphviz).
 
@@ -277,13 +277,12 @@ If you discover a security vulnerability, please open a draft security advisory 
    - `npm run format:check` passes (`npm run format` to fix)
    - `npm run test:coverage` meets 80% thresholds (see
      [Testing Requirements](#testing-testing-requirements))
-   - `npm run docs` regenerated if public API changed (commit `docs/*.md`)
    - `dependency-graph.svg` updated if `src/` structure changed
    - No secrets (`npm run secretlint`), no lockfile issues (`npm run lockfile-lint`)
 4. **Push** and open a PR targeting `main`. Link any related issue (`Fixes #123`). Fill in the PR description — what changed and why.
 5. **CI must pass:** `check` (lint/spell/secretlint/format/type-check/coverage/knip/depcruise), `commitlint`, and `audit` (npm audit + osv-scanner SARIF + depcruiser HTML artifact).
 6. **Review (Code Review Process):** address feedback with new commits (or fixup + rebase at maintainer discretion). Maintainers squash or rebase on merge. At least one maintainer review is required.
-7. **After merge to `main`:** `release.yml` runs `quality` → `build` → `semantic-release` automatically.
+7. **After merge to `main`:** `release.yml` runs `quality` → `build` → `docs` → `semantic-release` automatically.
 
 ## Release
 
@@ -291,8 +290,7 @@ Releases are fully automated by [semantic-release](https://semantic-release.org)
 
 - Commit messages drive versioning via `@semantic-release/commit-analyzer` (feat → minor, fix → patch, `BREAKING CHANGE` / `!` → major).
 - Changelog updated in [CHANGELOG.md](./CHANGELOG.md) (`@semantic-release/changelog`).
-- No npm publish (`npmPublish: false`, `private: true`) — package is not published. `@semantic-release/git` commits `package.json` + `CHANGELOG.md` with `chore(release): ${version}` — deliberately **without** `[skip ci]`, because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
-- The `docs: regenerate docs [skip ci]` commit from the `docs` job is skipped by CI (`[skip ci]`).
+- No npm publish (`npmPublish: false`, `private: true`) — package is not published. `@semantic-release/git` commits `package.json` + `package-lock.json` + `CHANGELOG.md` + `docs/**` with `chore(release): ${version}` — deliberately **without** `[skip ci]`, because the release PR's required checks must run (release commits land on `release/vX.Y.Z`, which no workflow watches anyway).
 - The workflow does **not** open the `release/vX.Y.Z` pull request itself: a PR created with `GITHUB_TOKEN` triggers no `pull_request` workflows, so its required checks would never report. The run summary instead contains a one-click **Open the release pull request** link plus the release notes to paste — open it under your own account (your event runs all checks), then enable auto-merge or merge once green.
 
 Preview locally:

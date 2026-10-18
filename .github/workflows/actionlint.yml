@@ -35,7 +35,7 @@ jobs:
         id: get_actionlint
         shell: bash
         run: |
-          bash <(curl -sSf https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 1.7.12
+          bash <(curl -sSf https://raw.githubusercontent.com/rhysd/actionlint/3795ba2f6cb243eeca54c9d22e5c531cb9dcfb4a/scripts/download-actionlint.bash) 1.7.12
           echo "executable=$(pwd)/actionlint" >> "$GITHUB_OUTPUT"
       - name: Add problem matcher
         shell: bash

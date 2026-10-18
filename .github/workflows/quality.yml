@@ -47,8 +47,7 @@ jobs:
       - run: npm run lint:spell
       - run: npm run secretlint
       - run: npm run format:check
-      - uses: editorconfig-checker/action-editorconfig-checker@51f63319f592f97930c73d9c46184d20bd206393 # v3.0.0
-      - run: editorconfig-checker
+      - run: npm run editorconfig
       - run: npm run package:sort -- --check
       - run: npm run type-check
       - run: npm run type-check:tests
@@ -99,11 +98,10 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm audit --omit dev --audit-level high
-      - name: Full-tree audit (runtime deps only)
-        run: npm audit --omit dev --audit-level critical
+      - name: Full-tree audit (blocks on critical)
+        run: npm audit --audit-level critical
       - run: mkdir -p reports
       - uses: google/osv-scanner-action/osv-scanner-action@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
-        continue-on-error: true
         with:
           scan-args: |-
             --recursive
@@ -161,36 +159,3 @@ jobs:
           name: audit-signatures
           path: reports/audit-signatures.txt
           if-no-files-found: warn
-
-  docs:
-    name: Docs
-    needs: check
-    if: ${{ github.event_name == 'pull_request' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    concurrency:
-      group: docs-${{ github.head_ref || github.ref }}
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        # zizmor: ignore[artipacked] - needs credentials to push docs via git-auto-commit to PR branch
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: '24'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run docs
-      - run: npx prettier --write docs/** --log-level silent || true
-      - name: Auto-commit if changed
-        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
-        with:
-          commit_message: 'docs: regenerate docs'
-          commit_options: '--no-verify'
-          file_pattern: docs/**

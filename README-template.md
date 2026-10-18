@@ -145,7 +145,7 @@ _[legend]_
 | **osv-scanner**      | Vulnerability scanning (`npm run osv`) — Go binary `github.com/google/osv-scanner/v2`                     | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `npm run osv*` locally; in CI via `setup-go`       |
 | **zizmor** `>=1.30`  | GitHub Actions security audit (`zizmor .`) — not in CI by default                                         | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local audit `zizmor .` / `zizmor --persona pedantic .` |
 | **Graphviz** (`dot`) | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                              | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                         | `npm run depcruise:graph` only                         |
-| **Git** `>=2.40`     | Husky hooks, `git-auto-commit-action` (`docs` job), `semantic-release`                                    | https://git-scm.com/downloads                                                                                             | always                                                 |
+| **Git** `>=2.40`     | Husky hooks, `semantic-release`                                                                           | https://git-scm.com/downloads                                                                                             | always                                                 |
 
 > **Tip:** verify locally with `go version && osv-scanner --version && zizmor --version && dot -V`
 
