@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.3...v1.1.4) (2026-10-18)
+
+### Bug Fixes
+
+- **ci:** audit the full dependency tree for critical vulnerabilities ([b9bdc48](https://github.com/SirEriTheRed/ts-bastion/commit/b9bdc48f49e150c33d58369ee914aa77858f6f47))
+- **ci:** make the osv scanner blocking ([deb8fd4](https://github.com/SirEriTheRed/ts-bastion/commit/deb8fd4f263dc6281c751f090d140a70090a5189))
+- **osv:** suppress unfixable katex and postcss-selector-parser advisories ([4eae9ff](https://github.com/SirEriTheRed/ts-bastion/commit/4eae9ffda028d8d5725bfb28b3ee634e056ce785))
+
 ## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
 
 ### Bug Fixes
