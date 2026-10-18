@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
   - `commitlint` (required): validates the commit range (`--from/--to` on PR, `--last` on push) with `commitlint.config.cjs`
   - `audit`: `npm audit --omit=dev --audit-level=high` (blocking, production dependencies) + full-tree `npm audit --audit-level=critical` (reports all findings, blocks on Critical) + `google/osv-scanner-action` SARIF (known unfixable dev-only findings suppressed by ID in `osv-scanner.toml`) → Security > Code scanning + `sbom:all` artifacts + depcruiser HTML + OSV SARIF artifacts
   - `audit-signatures`: `npm audit signatures` → `reports/audit-signatures.txt`, `continue-on-error: true`, informational (not in required checks)
-  - `docs` (PR only, `needs: check`): `npm run docs` + auto-commit `docs: regenerate docs` via `git-auto-commit-action`
+  - `docs` (same-repo PRs only, `needs: check`): `npm run docs` + auto-commit `docs: regenerate docs` via `git-auto-commit-action` (fork PRs are skipped: their head branch does not exist here and the token is read-only)
 - `.github/workflows/actionlint.yml` — `rhysd/actionlint` v1.7.12 (download script) + shellcheck (`-pyflakes=""`), blocking on push (main/develop) + pull_request (main) + `workflow_dispatch`/`workflow_call`
 - `.github/workflows/zizmor.yml` — `zizmorcore/zizmor-action@v0.6.4` → SARIF `zizmor` → Security > Code scanning on push (main/develop), PR (main), schedule `0 4 * * 1`, `workflow_dispatch`/`workflow_call`; `exit 0` always (SARIF) → block via Code Scanning branch protection ruleset (Require code scanning results — `zizmor`)
 - `.github/workflows/codeql.yml` — CodeQL `javascript-typescript` (`security-extended`) on push/PR (main, master) + schedule `0 4 * * 1` + `workflow_dispatch`
