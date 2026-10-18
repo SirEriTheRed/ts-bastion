@@ -65,7 +65,6 @@
     "sbom": "mkdir -p reports/sbom && npm sbom --sbom-format spdx --package-lock-only > reports/sbom/sbom.spdx.json",
     "sbom:all": "npm run sbom && npm run sbom:cyclonedx",
     "sbom:cyclonedx": "mkdir -p reports/sbom && npm sbom --sbom-format cyclonedx --package-lock-only > reports/sbom/sbom.cyclonedx.json",
-    "sbom:validate": "npx --yes @cyclonedx/cyclonedx-cli validate --input-file reports/sbom/sbom.cyclonedx.json 2>/dev/null || node -e \"JSON.parse(require('fs').readFileSync('reports/sbom/sbom.cyclonedx.json','utf8')); console.log('SBOM valid JSON')\" || true",
     "secretlint": "secretlint \"**/*\"",
     "secretlint:mask": "secretlint --maskSecrets \"**/*\"",
     "test": "vitest run",
