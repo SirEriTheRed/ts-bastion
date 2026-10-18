@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 ## CI/CD pipelines
 
 - `.github/workflows/quality.yml` — `workflow_call` (from `release.yml`) + push (`develop`) + pull_request (`main`); jobs:
-  - `check` (required): **REUSE compliance** (`fsfe/reuse-action@v6`, SHA-pinned, right after checkout) → `lockfile-lint` → `lint` → `lint:package` → `ls-lint` → `lint:spell` → `secretlint` → `format:check` → `editorconfig-checker` → `package:sort --check` → `type-check` → `type-check:tests` → `test:coverage` → `knip` → `depcruise`
+  - `check` (required): **REUSE compliance** (`fsfe/reuse-action@v6`, SHA-pinned, right after checkout) → `lockfile-lint` → `lint` → `lint:package` → `ls-lint` → `lint:spell` → `secretlint` → `format:check` → `npm run editorconfig` (devDependency binary, not the GitHub action) → `package:sort --check` → `type-check` → `type-check:tests` → `test:coverage` → `knip` → `depcruise`
   - `commitlint` (required): validates the commit range (`--from/--to` on PR, `--last` on push) with `commitlint.config.cjs`
   - `audit`: `npm audit --omit=dev --audit-level=high` (blocking, production dependencies) + full-tree `npm audit --audit-level=critical` (reports all findings, blocks on Critical) + `google/osv-scanner-action` SARIF (known unfixable dev-only findings suppressed by ID in `osv-scanner.toml`) → Security > Code scanning + `sbom:all` artifacts + depcruiser HTML + OSV SARIF artifacts
   - `audit-signatures`: `npm audit signatures` → `reports/audit-signatures.txt`, `continue-on-error: true`, informational (not in required checks)
