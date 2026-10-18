@@ -113,6 +113,10 @@ jobs:
             git checkout -B "$BRANCH"
             git push -u origin "$BRANCH"
           fi
+          # Regenerate API docs on the release branch (the per-PR docs job was
+          # removed); @semantic-release/git ships them with the release commit.
+          npm run docs
+          npx prettier --write docs/** --log-level silent
           # GitHub ignores workflow-level overrides of the default GITHUB_* variables,
           # so env-ci would otherwise resolve ciBranch to the triggering branch (main)
           # and semantic-release would exit without releasing. Set it in the shell,
