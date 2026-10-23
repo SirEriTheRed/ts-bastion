@@ -7,57 +7,31 @@ SPDX-License-Identifier: MIT
 
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-We release patches for security vulnerabilities. Only the latest `main` is actively supported.
+Only the latest `main` is supported. Older tags exist for reference but don't get patches.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| `main`  | :white_check_mark: |
-| `< 1.0` | :x:                |
+## Reporting a vulnerability
 
-## Reporting a Vulnerability
+Don't open a public issue. Report privately so it can be fixed before disclosure:
 
-**Do not open a public issue.** Please report privately so we can fix it before disclosure.
+- Preferred: a [draft security advisory](https://github.com/SirEriTheRed/ts-bastion/security/advisories/new)
+- Alternative: email <azelann.borde@gmail.com>
 
-- **Preferred:** open a
-  [draft security advisory](https://github.com/SirEriTheRed/ts-bastion/security/advisories/new)
-- **Alternative:** email **<azelann.borde@gmail.com>**
+Include the affected version or commit, how to reproduce it, the impact, and anything
+you've already figured out about mitigation.
 
-Please include:
+I'll acknowledge receipt within 2 business days and share a plan and timeline. I ask for
+a 90-day coordinated disclosure window while a fix is prepared. Credit goes to you if you
+want it.
 
-- Affected version / commit and how to reproduce
-- Impact and whether it is exploitable
-- Any suggested mitigation
+While waiting, please don't touch data that isn't yours and don't run denial-of-service
+tests against this project or its users.
 
-We will acknowledge receipt within 2 business days and share a plan and timeline for a fix.
-We ask for a 90-day coordinated disclosure window while we prepare a patch. We will credit you
-if you wish.
+## What runs automatically
 
-## What to Expect
-
-- Acknowledgment within 2 business days
-- Regular updates at least every 7 days until resolved
-- A fix or mitigation and a follow-up advisory or release note
-
-We follow responsible disclosure and ask reporters to do the same. Please avoid accessing or
-altering data that is not yours and do not perform denial-of-service testing.
-
-## Security Tooling
-
-This template ships with automated checks. See [`CONTRIBUTING.md`](./CONTRIBUTING.md#security)
-for details:
-
-- `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies
-  only; full-tree `npm audit --audit-level=critical` also runs, reporting all findings)
-- `osv-scanner` — locally `npm run osv` / `npm run osv:html` → `reports/osv-report.html`; in CI
-  via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Code Scanning; unfixable
-  dev-only findings suppressed by ID in `osv-scanner.toml`
-- `secretlint` — `npm run secretlint` / `npm run secretlint:mask` plus lint-staged on every commit
-- `lockfile-lint` — `npm run lockfile-lint` validates `package-lock.json`
-- `zizmor` — optional `zizmor .` for GitHub Actions hardening (`pipx` / `cargo` / `brew`)
-
-## Acknowledgments
-
-Thank you for helping keep this project and its users safe. We will publicly thank reporters
-who wish to be credited once the issue is resolved.
+CI covers the usual supply-chain ground: `npm audit` (blocking on high for production
+deps, critical for the full tree), osv-scanner uploaded to code scanning, lockfile-lint,
+and secretlint on every commit. Local scripts for the same checks are listed in
+[docs/tooling.md](docs/tooling.md); vulnerability reports from humans still go through the
+channels above.
