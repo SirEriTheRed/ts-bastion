@@ -58,9 +58,6 @@ desktop.ini
 *.sln
 *.sw?
 
-# Docs generated media duplicate — source is root README-template.md (typedoc copies linked markdown to docs/_media)
-docs/_media/
-
 # actionlint local binary (download script)
 actionlint
 actionlint.exe

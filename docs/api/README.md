@@ -1,4 +1,4 @@
-[**@erithered/ts-bastion**](README.md)
+**@erithered/ts-bastion**
 
 ---
 

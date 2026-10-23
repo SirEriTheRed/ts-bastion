@@ -38,7 +38,7 @@
     "depcruise:graph": "depcruise src --include-only '^src' --output-type dot | dot -T svg > dependency-graph.svg",
     "depcruise:html": "mkdir -p reports/depcruiser && depcruise src --output-type err-html --output-to reports/depcruiser/index.html",
     "dev": "tsc --watch",
-    "docs": "rm -rf docs && typedoc",
+    "docs": "rm -rf docs/api && typedoc",
     "docs:html": "typedoc --options typedoc.html.json",
     "docs:watch": "typedoc --watch",
     "editorconfig": "editorconfig-checker",

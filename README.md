@@ -296,7 +296,7 @@ reports/
 Full documentation lives in [`docs/`](./docs) — generated from TSDoc via TypeDoc. Browse
 quickstart, API reference, and guides:
 
-- API docs: [`docs/README.md`](./docs/README.md) (markdown, committed)
+- API docs: `docs/api/README.md` (markdown, committed)
 - HTML site: `reports/docs/index.html` (generated via `npm run docs:html`)
 - Dependency graph: see [Dependency Graph](#dependency-graph) above
 
