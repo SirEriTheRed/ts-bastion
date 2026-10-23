@@ -36,7 +36,7 @@
 
 # Linguist — generated files
 dist/** linguist-generated=true
-docs/** linguist-generated=true
+docs/api/** linguist-generated=true
 reports/** linguist-generated=true
 coverage/** linguist-generated=true
 package-lock.json linguist-generated=true

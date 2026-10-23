@@ -305,10 +305,10 @@ When adding features, include tests that preserve or improve coverage. Test file
 ## Documentation
 
 - **TSDoc:** document exported/public surface (functions, classes, types, interfaces). `tsdoc/syntax: error` is enforced. Do not repeat types already declared by TypeScript — describe intent and behavior.
-- **TypeDoc:** generates `docs/*.md` (markdown, committed) and `reports/docs/index.html` (HTML, gitignored).
+- **TypeDoc:** generates `docs/api/*.md` (markdown, committed) and `reports/docs/index.html` (HTML, gitignored).
 
 ```bash
-npm run docs        # → docs/*.md (commit these)
+npm run docs        # → docs/api/*.md (commit these)
 npm run docs:html   # → reports/docs/index.html (gitignored, browsable)
 npm run docs:watch  # watch mode
 ```
