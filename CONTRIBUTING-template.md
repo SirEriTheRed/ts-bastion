@@ -5,15 +5,21 @@ SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
 SPDX-License-Identifier: MIT
 -->
 
-# <!--
+<!--
+CONTRIBUTING TEMPLATE v2
 
-CONTRIBUTING TEMPLATE — RADMEv2
-Designed for human maintainers and AI agents.
+WHAT THIS FILE IS
+A fill-in-the-blanks copy of CONTRIBUTING.md for when you start a new project from
+this template. The live CONTRIBUTING.md covers this repository; this file is meant
+to cover YOUR project.
 
-Instructions: - Replace every [bracketed placeholder] with your project's actual values. - Remove or comment out optional sections that don't apply to your project. - Keep the HTML comments — they are invisible on GitHub/GitLab but serve as
-guidance for anyone (human or AI) editing this file.
-================================================================================
+HOW TO USE IT
+1. Replace every [BRACKETED PLACEHOLDER] with your project's values.
+2. Delete the sections that don't apply to how you work.
+3. Delete this file when you're done. A project ships one CONTRIBUTING.md.
 
+The HTML comments below guide whoever edits the file next, human or AI. They don't
+render on GitHub.
 -->
 
 <!-- Placeholders: [PROJECT_NAME], [PACKAGE_NAME], [OWNER], [REPO], [LICENSE_NAME], [CODE_OF_CONDUCT_EMAIL] — replace all before publishing -->
@@ -22,7 +28,8 @@ guidance for anyone (human or AI) editing this file.
 
 <!--
   Intro — keep concise. Replace [PROJECT_NAME] and [LICENSE_NAME] / LICENSE link.
-  If your license differs from ISC, update both here and in the License section below.
+  The template ships with the MIT license; update both here and in the License
+  section below if you change it.
 -->
 
 Thank you for considering contributing! This document explains how to set up your environment, follow the project's conventions, and submit changes. By contributing you agree that your contributions will be licensed under the [LICENSE_NAME](./LICENSE).
@@ -298,10 +305,10 @@ When adding features, include tests that preserve or improve coverage. Test file
 ## Documentation
 
 - **TSDoc:** document exported/public surface (functions, classes, types, interfaces). `tsdoc/syntax: error` is enforced. Do not repeat types already declared by TypeScript — describe intent and behavior.
-- **TypeDoc:** generates `docs/*.md` (markdown, committed) and `reports/docs/index.html` (HTML, gitignored).
+- **TypeDoc:** generates `docs/api/*.md` (markdown, committed) and `reports/docs/index.html` (HTML, gitignored).
 
 ```bash
-npm run docs        # → docs/*.md (commit these)
+npm run docs        # → docs/api/*.md (commit these)
 npm run docs:html   # → reports/docs/index.html (gitignored, browsable)
 npm run docs:watch  # watch mode
 ```
@@ -377,7 +384,7 @@ npm run release:dry
 ## License
 
 <!--
-  Replace [LICENSE_NAME] and holder. Keep ISC if unchanged.
+  Replace [LICENSE_NAME] and holder. Keep MIT if unchanged.
 -->
 
 Distributed under the [LICENSE_NAME](./LICENSE). By contributing you agree your contributions are licensed under the same terms. See `LICENSE` for details.

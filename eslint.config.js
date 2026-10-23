@@ -24,7 +24,7 @@ export default tseslint.config(
       "coverage/",
       "reports/",
       ".husky/",
-      "docs/",
+      "docs/api/",
       "CHANGELOG.md",
       "**/*.cjs",
       "eslint.config.js",
@@ -216,7 +216,7 @@ export default tseslint.config(
     languageOptions: { frontmatter: "yaml" },
   },
   {
-    files: ["README-template.md", "CONTRIBUTING-template.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT-template.md", "SECURITY.md", "SECURITY-template.md"],
+    files: ["README-template.md", "CONTRIBUTING-template.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "CODE_OF_CONDUCT-template.md", "SECURITY.md", "SECURITY-template.md", "old-docs/**/*.md"],
     rules: {
       "markdown/no-missing-label-refs": "off",
       "markdown/no-missing-link-fragments": "off",

@@ -6,10 +6,22 @@ SPDX-License-Identifier: MIT
 -->
 
 <!--
-CODE_OF_CONDUCT TEMPLATE — RADMEv2
-Design for human maintainers and AI agents.
-Instructions: Replace every [bracketed placeholder] with your project's actual values.
-Keep HTML comments — invisible on GitHub but helpful for humans and AI editing this file.
+CODE OF CONDUCT TEMPLATE v2
+
+WHAT THIS FILE IS
+A fill-in-the-blanks copy of CODE_OF_CONDUCT.md for when you start a new project
+from this template. The live CODE_OF_CONDUCT.md covers this repository; this file
+is meant to cover YOUR project.
+
+HOW TO USE IT
+1. Replace every [BRACKETED PLACEHOLDER], especially [CODE_OF_CONDUCT_EMAIL] —
+   that's where people report conduct issues privately.
+2. Read the text and adjust anything that doesn't match how you want to run the
+   project. A code of conduct you haven't read is a code of conduct nobody follows.
+3. Delete this file when you're done. A project ships one CODE_OF_CONDUCT.md.
+
+The HTML comments below guide whoever edits the file next, human or AI. They don't
+render on GitHub.
 -->
 
 <!-- Placeholders: [PROJECT_NAME], [OWNER], [REPO], [CODE_OF_CONDUCT_EMAIL] -->

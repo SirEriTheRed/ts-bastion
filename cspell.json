@@ -132,7 +132,7 @@
     "dist",
     "coverage",
     "reports",
-    "docs",
+    "docs/api",
     "*.log",
     "package-lock.json",
     "cspell.json",

@@ -2,7 +2,7 @@
 
 ---
 
-[@erithered/ts-bastion](../globals.md) / logHello
+[@erithered/ts-bastion](../README.md) / logHello
 
 # Function: logHello()
 
