@@ -14,6 +14,7 @@ ls:
   .sh: kebab-case
 
 ignore:
+  - old-docs
   - node_modules
   - dist
   - reports
