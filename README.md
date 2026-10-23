@@ -69,22 +69,69 @@ The only placeholder is `logHello()` in `src/index.ts`. Replace it with your pub
 Every script, when to reach for it, and what breaks if you remove the tool behind it is
 in [docs/tooling.md](docs/tooling.md).
 
+## Tooling
+
+| Category      | Tool / Config                                                                                                                                      | Version / Detail     |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| Language      | TypeScript strict (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `skipLibCheck: false`)              | `6.0.3`              |
+| Lint          | ESLint flat config + `typescript-eslint` (strict + stylistic type-checked), `unicorn`, `sonarjs`, `security`, `import-x`, `eslint-config-prettier` | `^10` / `^8`         |
+| Format        | Prettier (`semi`, `singleQuote`, `tabWidth: 2`, `printWidth: 100`)                                                                                 | `^3.9`               |
+| Tests         | Vitest (`globals: true`) + `@vitest/coverage-v8`, 80% thresholds for lines/functions/branches/statements                                           | `5.0.5`              |
+| Dead code     | Knip                                                                                                                                               | `^6.42`              |
+| Dependencies  | dependency-cruiser (`err-long`, `no-circular`, `no-orphans`, `no-non-package-json`)                                                                | `^18.7`              |
+| Git hooks     | Husky + lint-staged + commitlint (`@commitlint/config-conventional`)                                                                               | `^9` / `^17` / `^21` |
+| Release       | semantic-release (`@semantic-release/changelog`, `@semantic-release/git`, `@semantic-release/npm`)                                                 | `^25`                |
+| Documentation | TypeDoc + `typedoc-plugin-markdown` (outputs to `docs/api/`)                                                                                       | `^0.28` / `^4`       |
+| Spell check   | CSpell                                                                                                                                             | `^10`                |
+| Lockfile      | lockfile-lint (`--allowed-hosts npm --validate-https --validate-integrity --empty-hostname false` on `package-lock.json`)                          | `^5.1`               |
+| Filename      | ls-lint (`.ls-lint.yml`, `kebab-case`)                                                                                                             | `2.3.2`              |
+| Workflow lint | actionlint (`actionlint -color` + shellcheck)                                                                                                      | `1.7.12`             |
+
 ## Prerequisites
 
 - Node.js `>=22` (`.nvmrc` pins the LTS I develop against), npm `>=10`
-- Git
+- Git `>=2.40`
 
-A few scripts shell out to binaries that aren't npm packages. CI installs its own copies;
-locally you only need them when you run the matching script:
+### External tools (manual installation required)
 
-| Tool                             | Needed for                     |
-| -------------------------------- | ------------------------------ |
-| `osv-scanner` (Go to install it) | `npm run osv`, `osv:html`      |
-| `zizmor`                         | `npm run zizmor`               |
-| `actionlint`                     | `npm run actionlint`           |
-| `reuse`                          | `npm run reuse`                |
-| Graphviz (`dot`)                 | `npm run depcruise:graph`      |
-| Docker                           | the `*:docker` script variants |
+These tools are not in `package.json` and must be installed separately if you want to run
+their scripts locally. CI installs its own copies where needed.
+
+| Tool                    | Role in project                                  | Install                                                                                                                   | When required?                                                   |
+| ----------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Go** `>=1.21`         | Compiles / installs `osv-scanner` locally        | <https://go.dev/dl/> or `brew install go` / `apt install golang`                                                          | `npm run osv*` locally; not needed in CI                         |
+| **osv-scanner**         | Vulnerability scanning (`npm run osv`)           | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | `npm run osv`, `osv:html` locally; in CI via GitHub action       |
+| **zizmor** `>=1.30`     | GitHub Actions security audit                    | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | `npm run zizmor` locally; in CI via GitHub action                |
+| **actionlint** `1.7.12` | Linter for GitHub Actions workflows + shellcheck | `go install github.com/rhysd/actionlint/cmd/actionlint@latest` · `brew install actionlint` · script download              | `npm run actionlint` locally (or `npm run actionlint:docker`)    |
+| **reuse** `>=6.2`       | REUSE / SPDX compliance check                    | `pipx install reuse` · `pip install reuse`                                                                                | `npm run reuse`, `npm run reuse:annotate` locally; checked in CI |
+| **Graphviz** (`dot`)    | Generates `dependency-graph.svg`                 | `brew install graphviz` / `apt install graphviz` / <https://graphviz.org/download/>                                       | `npm run depcruise:graph` only                                   |
+| **Git** `>=2.40`        | Husky hooks, conventional commits, releases      | <https://git-scm.com/downloads>                                                                                           | always                                                           |
+
+Verify locally:
+
+```bash
+go version && osv-scanner --version && zizmor --version && reuse --version && dot -V
+```
+
+## Dependency graph
+
+Architecture rules are defined in [`.dependency-cruiser.cjs`](./.dependency-cruiser.cjs)
+(`no-circular`, `no-orphans`, `no-non-package-json`, `not-to-dev-dep`, …). Verify with:
+
+```bash
+npm run depcruise
+```
+
+Generate the graph with `dependency-cruiser` + Graphviz (`dot`):
+
+```bash
+npm run depcruise:graph
+```
+
+![Dependency graph](./dependency-graph.svg)
+
+The SVG is committed and automatically refreshed on pre-commit when `src/` or
+`.dependency-cruiser.cjs` is staged (if Graphviz `dot` is installed).
 
 ## What CI runs
 
