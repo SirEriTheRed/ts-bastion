@@ -131,7 +131,7 @@ Conventions are enforced by ESLint (flat config, strict type-checked) and Pretti
 - **Import order:** `builtin → external → internal → parent → sibling → index`, grouped with newlines, alphabetized (`import-x/order`).
 - **Modules:** `verbatimModuleSyntax: true` — use `.js` extensions in relative imports and `import type` for types.
 - **Prettier:** `semi: true`, `singleQuote: true`, `tabWidth: 2`, `trailingComma: "es5"`, `printWidth: 100`.
-- **No abbreviations:** `unicorn/prevent-abbreviations` with `allowList: ["i","j"]` — prefer verbose names.
+- **No abbreviations:** `unicorn/name-replacements` with `allowList: { i: true, j: true }` — prefer verbose names.
 - **Naming:**
   - `variable` / `parameter` / `method` → `camelCase` (`variable` `const` allows `UPPER_CASE`)
   - `function` → `camelCase`

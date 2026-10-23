@@ -96,7 +96,7 @@ export default tseslint.config(
       "unicorn/prefer-top-level-await": "error",
       "unicorn/no-array-reduce": "off",
       "unicorn/no-null": "off",
-      "unicorn/prevent-abbreviations": ["error", { replacements: {}, allowList: { i: true, j: true } }],
+      "unicorn/name-replacements": ["error", { allowList: { i: true, j: true } }],
 
       // SonarJS
       "sonarjs/cognitive-complexity": ["error", 20],
