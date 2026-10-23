@@ -19,7 +19,7 @@ _A TypeScript project template centered around code quality and CI/CD._
 
 [![build](https://img.shields.io/github/actions/workflow/status/SirEriTheRed/ts-bastion/quality.yml?branch=main)](https://github.com/SirEriTheRed/ts-bastion/actions)
 [![coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)](https://github.com/SirEriTheRed/ts-bastion)
-[![node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
+[![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/SirEriTheRed/ts-bastion)](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/SirEriTheRed/ts-bastion/badge)](https://scorecard.dev/viewer/?uri=github.com/SirEriTheRed/ts-bastion)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://commitizen.github.io/cz-cli/)
@@ -112,7 +112,7 @@ Minimal yet strict template, ready to clone to start a TypeScript project (API, 
 
 ## Prerequisites
 
-- Node.js `>=20` (`lts/jod` recommended, see `.nvmrc`)
+- Node.js `>=22` (`lts/jod` recommended, see `.nvmrc`)
 - npm `>=10`
 
 ## Getting Started
@@ -176,7 +176,7 @@ listed below.
 | **actionlint** `v1.7.12` | Linter workflows GitHub Actions — `actionlint -color` + shellcheck                                                                                    | `go install github.com/rhysd/actionlint/cmd/actionlint@latest` · `brew install actionlint` · script download                    | `npm run actionlint` local (recommended); CI via `.github/workflows/actionlint.yml` (blocking)                                                              |
 | **reuse** `>=6.2`        | REUSE/SPDX compliance — copyright + license header on every file — CI via `.github/workflows/quality.yml` (`fsfe/reuse-action@v6`)                    | `pipx install reuse` · `pip install reuse`                                                                                      | `npm run reuse` local (recommended); `npm run reuse:annotate` adds missing headers; CI blocking on push/PR                                                  |
 | **Graphviz** (`dot`)     | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                                                                          | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                               | `npm run depcruise:graph` only                                                                                                                              |
-| **Git** `>=2.40`         | Husky hooks, `git-auto-commit-action` (`docs` job), `semantic-release`                                                                                | https://git-scm.com/downloads                                                                                                   | always                                                                                                                                                      |
+| **Git** `>=2.40`         | Husky hooks, `semantic-release`                                                                                                                       | https://git-scm.com/downloads                                                                                                   | always                                                                                                                                                      |
 
 > **Tip:** verify locally with `go version && osv-scanner --version && zizmor --version && reuse --version && dot -V`
 
@@ -184,7 +184,7 @@ listed below.
 
 | Category      | Tool / Config                                                                                                                                                                                              | Version / Detail     |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| Language      | TypeScript strict (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`)                                                                                             | `^5.9`               |
+| Language      | TypeScript strict (`strict`, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`)                                                                                             | `^6.0`               |
 | Lint          | ESLint flat config + `typescript-eslint` (strict + stylistic type-checked), `eslint-plugin-unicorn`, `eslint-plugin-sonarjs`, `eslint-plugin-security`, `eslint-plugin-import-x`, `eslint-config-prettier` | `^10`                |
 | Format        | Prettier (`semi`, `singleQuote`, `tabWidth:2`, `printWidth:100`)                                                                                                                                           | `^3.8`               |
 | Tests         | Vitest (`globals:true`) + `@vitest/coverage-v8`, 80% thresholds for lines/functions/branches/statements                                                                                                    | `^4.1`               |
@@ -228,7 +228,6 @@ listed below.
 | `npm run sbom`                | `npm sbom --sbom-format spdx --package-lock-only` → `reports/sbom/sbom.spdx.json` (GitHub Dependency Graph)                                                                                  |
 | `npm run sbom:cyclonedx`      | `npm sbom --sbom-format cyclonedx --package-lock-only` → `reports/sbom/sbom.cyclonedx.json`                                                                                                  |
 | `npm run sbom:all`            | `npm run sbom && npm run sbom:cyclonedx` — generates both                                                                                                                                    |
-| `npm run sbom:validate`       | `npx @cyclonedx/cyclonedx-cli validate` → validates `reports/sbom/sbom.cyclonedx.json` (non-blocking)                                                                                        |
 | `npm run zizmor`              | `zizmor .` — GitHub Actions audit (requires `zizmor` binary); CI via `zizmorcore/zizmor-action@v0.6.4` → SARIF `zizmor` → Security > Code scanning                                           |
 | `npm run zizmor:sarif`        | `zizmor --format sarif . > reports/zizmor.sarif` — local SARIF preview (same `--format=sarif` as CI, `exit 0` always; block via Code Scanning ruleset)                                       |
 | `npm run depcruise`           | `depcruise src --output-type err-long`                                                                                                                                                       |

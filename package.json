@@ -77,34 +77,38 @@
     "zizmor": "zizmor .",
     "zizmor:sarif": "mkdir -p reports && zizmor --format sarif . > reports/zizmor.sarif"
   },
+  "allowScripts": {
+    "editorconfig-checker@7.0.0": true,
+    "unrs-resolver@1.12.2": true
+  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.3",
-    "@commitlint/config-conventional": "^21.0.2",
-    "@commitlint/cz-commitlint": "^21.2.3",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@commitlint/cz-commitlint": "^21.2.4",
     "@eslint/js": "^10.0.1",
     "@eslint/markdown": "^8.0.3",
-    "@ls-lint/ls-lint": "2.3.1",
+    "@ls-lint/ls-lint": "2.3.2",
     "@secretlint/secretlint-rule-preset-recommend": "^13.0.7",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/git": "^11.0.1",
     "@semantic-release/github": "^12.0.10",
-    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/npm": "^13.2.0",
     "@types/node": "^22.20.5",
-    "@vitest/coverage-v8": "4.1.11",
-    "@vitest/eslint-plugin": "^1.6.27",
+    "@vitest/coverage-v8": "5.0.5",
+    "@vitest/eslint-plugin": "^1.6.28",
     "commitizen": "^4.3.2",
-    "commitlint": "^21.2.3",
-    "cspell": "^10.3.6",
-    "dependency-cruiser": "^18.6.0",
+    "commitlint": "^21.2.4",
+    "cspell": "^10.4.0",
+    "dependency-cruiser": "^18.7.0",
     "editorconfig-checker": "7.0.0",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-import-x": "^4.17.0",
+    "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-promise": "^7.3.0",
     "eslint-plugin-regexp": "^3.3.1",
     "eslint-plugin-security": "^4.2.0",
@@ -113,20 +117,20 @@
     "eslint-plugin-unicorn": "55.0.0",
     "husky": "^9.1.7",
     "inquirer": "^9.3.8",
-    "knip": "^6.41.0",
+    "knip": "^6.42.1",
     "license-checker": "^25.0.1",
     "lint-staged": "^17.6.0",
     "lockfile-lint": "^5.1.0",
     "npm-package-json-lint": "11.0.0",
     "prettier": "^3.9.10",
     "secretlint": "^13.0.7",
-    "semantic-release": "^25.0.5",
-    "sort-package-json": "^4.0.0",
-    "typedoc": "^0.28.19",
-    "typedoc-plugin-markdown": "^4.13.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.71.1",
-    "vitest": "4.1.11"
+    "semantic-release": "^25.0.9",
+    "sort-package-json": "^4.1.0",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vitest": "5.0.5"
   },
   "engines": {
     "node": ">=22"
@@ -134,9 +138,5 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  },
-  "allowScripts": {
-    "editorconfig-checker@7.0.0": true,
-    "unrs-resolver@1.12.2": true
   }
 }
