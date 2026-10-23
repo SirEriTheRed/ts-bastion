@@ -14,7 +14,7 @@ template. The live SECURITY.md covers this repository; this file is meant to cov
 YOUR project.
 
 HOW TO USE IT
-1. Replace every [BRACKETED PLACEHOLDER], especially [SECURITY_EMAIL] — people
+1. Replace every [BRACKETED PLACEHOLDER], especially [SECURITY_EMAIL]: people
    need a working way to reach you before they report anything.
 2. Adjust the supported-versions table to match how you release.
 3. Delete this file when you're done. A project ships one SECURITY.md.

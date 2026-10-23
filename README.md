@@ -14,10 +14,10 @@ SPDX-License-Identifier: MIT
 The strict TypeScript starter I use as the base for my own projects, and that anyone else
 is welcome to clone. Zero runtime dependencies, and everything else is already wired:
 strict `tsconfig`, ESLint + Prettier, Vitest with coverage thresholds, pre-commit hooks,
-CI workflows, release automation, and supply-chain checks. It reads like a lot because it
-is meant to be a lot: a fresh clone should be close to what a real project needs, so you
-start by writing code instead of assembling config. The strictness is deliberate. If it
-feels heavy, the knobs are in `tsconfig.json` and `eslint.config.js`.
+CI workflows, release automation, and supply-chain checks. The docs and the checks look
+like a lot because the repo is meant to be complete: a fresh clone should already be close
+to what a real project needs, so you start by writing code instead of assembling config.
+If the strictness feels heavy, the knobs are in `tsconfig.json` and `eslint.config.js`.
 
 [![build](https://img.shields.io/github/actions/workflow/status/SirEriTheRed/ts-bastion/quality.yml?branch=main)](https://github.com/SirEriTheRed/ts-bastion/actions)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
@@ -125,17 +125,17 @@ Steps 1 and 2 are in the repo. Step 3 lives on npm's side and can only be done b
 
 ## Documentation
 
-- [docs/](./docs) — hand-written guides, starting with the [tooling reference](docs/tooling.md)
-- `docs/api/` — API reference generated from TSDoc (`npm run docs`); regenerate and commit
+- [docs/](./docs): hand-written guides, starting with the [tooling reference](docs/tooling.md)
+- `docs/api/`: API reference generated from TSDoc (`npm run docs`); regenerate and commit
   it when the public API changes. Releases regenerate it automatically.
-- `reports/docs/` — the same docs as a browsable HTML site (`npm run docs:html`, gitignored)
+- `reports/docs/`: the same docs as a browsable HTML site (`npm run docs:html`, gitignored)
 - [`dependency-graph.svg`](./dependency-graph.svg) at the root (`npm run depcruise:graph`,
   also refreshed by the pre-commit hook when `src/` changes)
 
 ## Contributing
 
-Setup, conventions, and the PR flow are in [CONTRIBUTING.md](./CONTRIBUTING.md); the rules
-of the road are in the [Code of Conduct](./CODE_OF_CONDUCT.md). Commit messages follow
+Setup, conventions, and the PR flow are in [CONTRIBUTING.md](./CONTRIBUTING.md); the
+[Code of Conduct](./CODE_OF_CONDUCT.md) covers behavior. Commit messages follow
 conventional commits, and `npm run commit` walks you through one.
 
 ### Contributors

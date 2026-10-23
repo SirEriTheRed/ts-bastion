@@ -9,9 +9,9 @@ SPDX-License-Identifier: MIT
 
 Hand-written guides live here; the API reference is generated into [`api/`](./api).
 
-- [Tooling reference](./tooling.md) — every script, when to run it, and what breaks if
+- [Tooling reference](./tooling.md): every script, when to run it, and what breaks if
   you remove the tool behind it
-- [API reference](./api/README.md) — generated from TSDoc comments in `src/` by
+- [API reference](./api/README.md): generated from TSDoc comments in `src/` by
   `npm run docs`. Don't edit it by hand; regenerate and commit when the public API
   changes
 
