@@ -113,7 +113,7 @@ SPDX-License-Identifier: MIT
 - **Type imports**: `@typescript-eslint/consistent-type-imports` with `prefer: "type-imports"`.
 - **Imports order**: builtin → external → internal → parent → sibling → index, grouped with newlines, alphabetized.
 - **Prettier**: semi, singleQuote, tabWidth 2, trailingComma es5, printWidth 100.
-- **No abbreviations**: `unicorn/prevent-abbreviations: ["error", { replacements: {}, allowList: ["i","j"] }]` — strict verbose.
+- **No abbreviations**: `unicorn/name-replacements: ["error", { allowList: { i: true, j: true } }]` — strict verbose (successor to deprecated `prevent-abbreviations`).
 - **Naming convention** (`@typescript-eslint/naming-convention: error`): `variable/parameter/method` → `camelCase` (`variable` `const` allows `UPPER_CASE`), `function` → `camelCase`, `typeLike` → `PascalCase`, `enumMember` → `PascalCase`, `typeParameter` → `PascalCase` prefix `T`, `property` → `camelCase` strict, `boolean` `variable/parameter` → `camelCase` prefix `is|has|should|can|was|did`.
 - **Function verb** (`@typescript-eslint/naming-convention: warn` on `**/*.ts`): `function` must match `^(get|create|fetch|update|delete|find|build|parse|format|validate|handle|set|remove|add|is|has|should|can).+` — separate `warn` block to circumvent 1 severity/selector limit.
 
