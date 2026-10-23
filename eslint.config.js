@@ -24,7 +24,7 @@ export default tseslint.config(
       "coverage/",
       "reports/",
       ".husky/",
-      "docs/",
+      "docs/api/",
       "CHANGELOG.md",
       "**/*.cjs",
       "eslint.config.js",
