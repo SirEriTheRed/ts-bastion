@@ -5,23 +5,30 @@ SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
 SPDX-License-Identifier: MIT
 -->
 
-# <!--
+<!--
+README TEMPLATE v2
 
-README TEMPLATE — RADMEv2
-Designed for human maintainers and AI agents.
+WHAT THIS FILE IS
+A fill-in-the-blanks copy of README.md for when you start a new project from this
+template. The live README.md documents the template itself; this file is meant to
+document YOUR project.
 
-Instructions: - Replace every [bracketed placeholder] with your project's actual values. - Remove or comment out optional sections that don't apply to your project. - Keep the HTML comments — they are invisible on GitHub/GitLab but serve as
-guidance for anyone (human or AI) editing this file.
-================================================================================
+HOW TO USE IT
+1. Replace every [BRACKETED PLACEHOLDER] with your project's values.
+2. Delete the optional sections you don't need; each one is wrapped in an HTML
+   comment that says so.
+3. Delete this file when you're done. A project ships one README, not two.
 
+The HTML comments below guide whoever edits the file next, human or AI. They don't
+render on GitHub.
 -->
 
-<!-- Placeholders: [PROJECT_NAME], [PACKAGE_NAME], [OWNER], [REPO], [WORKFLOW_FILE], [BRANCH], [COVERAGE], [NODE_VERSION], [LICENSE_NAME], [LICENSE_LINK], [CODE_OF_CONDUCT_EMAIL], [TECH_TYPE_LAYER], [TECH_NAME], [TECH_VERSION], [FEATURE_NAME], [FEATURE_DESCRIPTION] — replace all before publishing -->
+<!-- Placeholders: [PROJECT_NAME], [PACKAGE_NAME], [OWNER], [REPO], [WORKFLOW_FILE], [BRANCH], [NODE_VERSION], [LICENSE_NAME], [LICENSE_LINK], [TECH_TYPE_LAYER], [TECH_NAME], [TECH_VERSION], [FEATURE_NAME], [FEATURE_DESCRIPTION] — replace all before publishing -->
 
 <div align="center">
 
 <!-- [PROJECT_NAME] → your project's display name (e.g. "Eri Auth System") -->
-<img src=".github/assets/logo.png" alt="[PROJECT_NAME] Logo" width="200" />
+<img src=".github/assets/logo.svg" alt="[PROJECT_NAME] Logo" width="200" />
 
 # [PROJECT_NAME]
 
@@ -38,13 +45,14 @@ _[short description with important keywords in bold]_
   - [REPO]             GitHub repository name
   - [WORKFLOW_FILE]    CI workflow YAML filename (e.g. quality.yml)
   - [BRANCH]           default branch name (e.g. main)
-  - [COVERAGE]         coverage percentage (e.g. 80)
   - [NODE_VERSION]     minimum Node version (e.g. >=18)
+
+  No coverage badge on purpose: a static shields.io badge is a number someone
+  typed once. If you want one, point it at your coverage service's real endpoint.
 -->
 
 [![npm version](https://img.shields.io/npm/v/[PACKAGE_NAME])](https://www.npmjs.com/package/[PACKAGE_NAME])
 [![build](https://img.shields.io/github/actions/workflow/status/[OWNER]/[REPO]/[WORKFLOW_FILE]?branch=[BRANCH])](https://github.com/[OWNER]/[REPO]/actions)
-[![coverage](https://img.shields.io/badge/coverage-[COVERAGE]%25-brightgreen)](https://github.com/[OWNER]/[REPO])
 [![node](https://img.shields.io/badge/node-%3E%3D[NODE_VERSION]-brightgreen)](https://nodejs.org)
 [![license](https://img.shields.io/github/license/[OWNER]/[REPO])](./LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/[OWNER]/[REPO]/badge)](https://scorecard.dev/viewer/?uri=github.com/[OWNER]/[REPO])
