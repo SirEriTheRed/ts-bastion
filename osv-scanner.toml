@@ -12,73 +12,59 @@
 # (`npm audit --omit=dev` is clean), so none of them reach runtime consumers.
 #
 # Entries are keyed by vulnerability ID rather than by package, so a NEW advisory
-# in any of these packages still fails CI and must be triaged deliberately.
-# Delete an entry once its package is no longer flagged.
+# in any of these packages still fails the local `npm run osv` scan and shows up
+# in SARIF and must be triaged deliberately. The CI osv step itself is
+# non-blocking (`continue-on-error`) so a single finding never gates a merge;
+# the prod/critical `npm audit` steps in the Audit job remain blocking.
+# Delete an entry once its package is no longer flagged — osv-scanner prints
+# "unused ignores" for stale entries, and TODO.md tracks pending upstream fixes.
 #
 # Why these cannot be fixed here:
 #   * braces, http-cache-semantics — advisory range covers every published
 #     release (FIXED VERSION = "--"); no fixed version exists upstream.
-#   * brace-expansion, ip-address, postcss-selector-parser, undici — a fix
-#     exists upstream, but the only flagged copy is the one bundled inside
-#     node_modules/npm (`inBundle: true`). Root copies are already patched
-#     (brace-expansion 5.0.12, undici 6.28.1 and 7.29.1); a root `overrides`
-#     entry or `npm update <pkg>` cannot reach a bundled subtree.
+#     (No longer flagged as of npm 11.21.1's bundled tree — entries removed.)
+#   * brace-expansion, ip-address, postcss-selector-parser, glob, minimatch,
+#     undici — a fix exists upstream, but the flagged copy is the one bundled
+#     inside node_modules/npm (`inBundle: true`); a root `overrides` entry or
+#     `npm update <pkg>` cannot reach a bundled subtree. For glob/minimatch the
+#     fix is also a semver-major jump of dev tooling. (brace-expansion and
+#     postcss-selector-parser are no longer flagged — entries removed.)
 #   * katex — fix exists only in 0.18.2, but micromark-extension-math@3.1.0
 #     (latest) pins katex ^0.16.0 and @eslint/markdown@8.0.3 is current.
 #     Upgrade path: an npm `overrides` entry once the parent widens its range.
-
-[[IgnoredVulns]]
-id = "GHSA-vfj7-8cjw-p6xm"
-reason = "braces <=3.0.3: advisory covers every published release, no fix exists. Dev-only via micromatch."
-
-[[IgnoredVulns]]
-id = "GHSA-ch52-4w7c-c8xp"
-reason = "http-cache-semantics 4.2.0: no fixed version exists; copy is bundled inside node_modules/npm. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-6j4f-fj2g-mc7p"
-reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-qhr7-859c-m2p7"
-reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-q2hr-2g5m-vwhr"
-reason = "brace-expansion 5.0.9 is the copy bundled inside node_modules/npm; root copy already 5.0.12. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-rpw4-54j3-4h4q"
-reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
-
-[[IgnoredVulns]]
-id = "GHSA-2vr4-cq9g-pvrc"
-reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
-
-[[IgnoredVulns]]
-id = "GHSA-h3mg-xc3c-68pw"
-reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
-
-[[IgnoredVulns]]
-id = "GHSA-j6r3-76f7-8jcv"
-reason = "ip-address 10.5.0 is bundled inside node_modules/npm (no root copy); dev-only via socks-proxy-agent."
-
-[[IgnoredVulns]]
-id = "GHSA-rfgv-xxqx-mfg5"
-reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-3wwx-pv8p-q78v"
-reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
-
-[[IgnoredVulns]]
-id = "GHSA-r53p-7pc4-xj5r"
-reason = "undici 6.28.0 is bundled inside node_modules/npm; root copy already 6.28.1. Advisory affects WebSocket paths npm does not use. Dev-only."
 
 [[IgnoredVulns]]
 id = "GHSA-238p-pmpm-9mq7"
 reason = "katex 0.16.47: only fixed in 0.18.2, but micromark-extension-math@3.1.0 (latest) pins katex ^0.16.0. Dev-only markdown math linting (CVSS 2.1)."
 
 [[IgnoredVulns]]
-id = "GHSA-rj75-hqrm-r3gf"
-reason = "postcss-selector-parser 7.1.4 is bundled inside node_modules/npm (npm update is a no-op); 7.1.6 exists upstream but is unreachable. Dev-only."
+id = "GHSA-xjj6-f33q-929c"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-2m5v-pch6-74hx"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-qrxm-fqhp-jwvm"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-4qv8-2p9j-2685"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-9fm3-97px-rjf6"
+reason = "undici 6.29.0 is bundled inside node_modules/npm (inBundle); fixed only in 6.29.1, which no published npm release (11.21.1 or 12.2.1) ships yet. Advisory affects WebSocket paths npm does not use. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-rxp7-6hxx-x8q5"
+reason = "ip-address 10.7.2 is bundled inside node_modules/npm (inBundle); fixed only in 10.7.4, unreachable in a bundled subtree. Dev-only via socks-proxy-agent, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-3g3m-2fjr-6pw4"
+reason = "glob 13.0.6 is bundled inside node_modules/npm (inBundle); fix requires semver-major 14.0.2 and cannot reach a bundled subtree. Dev-only, see TODO.md."
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+reason = "minimatch: 10.2.5 bundled inside node_modules/npm, 10.2.6 via eslint tooling, 3.1.5 via commitizen/license-checker; fix requires semver-major 11.0.1 across dev tooling. Dev-only, see TODO.md."
