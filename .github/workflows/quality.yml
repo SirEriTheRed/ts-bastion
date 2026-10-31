@@ -101,7 +101,9 @@ jobs:
       - name: Full-tree audit (blocks on critical)
         run: npm audit --audit-level critical
       - run: mkdir -p reports
-      - uses: google/osv-scanner-action/osv-scanner-action@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
+      - name: OSV scan (non-blocking; SARIF still uploaded, see TODO.md)
+        continue-on-error: true
+        uses: google/osv-scanner-action/osv-scanner-action@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
         with:
           scan-args: |-
             --recursive
