@@ -23,7 +23,7 @@ The HTML comments below guide whoever edits the file next, human or AI. They don
 render on GitHub.
 -->
 
-<!-- Placeholders: [PROJECT_NAME], [PACKAGE_NAME], [OWNER], [REPO], [WORKFLOW_FILE], [BRANCH], [NODE_VERSION], [LICENSE_NAME], [LICENSE_LINK], [TECH_TYPE_LAYER], [TECH_NAME], [TECH_VERSION], [FEATURE_NAME], [FEATURE_DESCRIPTION] — replace all before publishing -->
+<!-- Placeholders: [PROJECT_NAME], [PACKAGE_NAME], [OWNER], [REPO], [WORKFLOW_FILE], [BRANCH], [NODE_VERSION], [LICENSE_NAME], [LICENSE_LINK], [TECH_TYPE_LAYER], [TECH_NAME], [TECH_VERSION], [FEATURE_NAME], [FEATURE_DESCRIPTION]: replace all before publishing -->
 
 <div align="center">
 
@@ -39,7 +39,7 @@ _[short description with important keywords in bold]_
 ---
 
 <!--
-  Badge placeholders — replace each with your project's actual values:
+  Badge placeholders: replace each with your project's actual values.
   - [PACKAGE_NAME]     npm / PyPI / crate name
   - [OWNER]            GitHub username or org
   - [REPO]             GitHub repository name
@@ -59,12 +59,12 @@ _[short description with important keywords in bold]_
 [![downloads](https://img.shields.io/npm/dm/[PACKAGE_NAME])](https://www.npmjs.com/package/[PACKAGE_NAME])
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](https://commitizen.github.io/cz-cli/)
 
-<!-- Navigation bar — section anchors; update if you rename any heading below -->
+<!-- Navigation bar: section anchors; update if you rename any heading below -->
 
 [Install](#installation) • [Documentation](#documentation) • [FAQ](#faq) • [Contributing](#contributing) • [Community](#community) • [Contact](#contact)
 
 <!--
-  Demo media — uncomment this block if you have a demo GIF / screenshot.
+  Demo media: uncomment this block if you have a demo GIF / screenshot.
   Replace "demo.gif" with your actual file path and update the legend text.
 -->
 <!--
@@ -102,9 +102,9 @@ _[legend]_
 ---
 
 <!--
-  Optional section — include if you want to explain why this project exists
+  Optional section: include if you want to explain why this project exists
   vs alternatives. Delete or comment out the entire block if not needed.
-  Consider adding a comparison table to highlight differences from similar tools.
+  Consider adding a comparison table to show differences from similar tools.
 -->
 
 [OPTIONAL
@@ -123,7 +123,7 @@ _[legend]_
 ---]
 
 <!--
-  Tech Stack — list each technology used. Repeat the table row for each entry.
+  Tech Stack: list each technology used. Repeat the table row for each entry.
   Example:
   | Runtime     | Node.js     | >=22        |
   | Framework   | Fastify     | ^5          |
@@ -145,24 +145,26 @@ _[legend]_
 
 ## External Tools (Manual User-Side Installation)
 
-> The following tools are **not** in `package.json` and must be installed separately. CI installs them automatically where needed, but locally you need them for certain commands.
+> The following tools are not in `package.json` and must be installed separately. CI
+> installs them automatically where needed, but locally you need them for certain
+> commands.
 
-| Tool                 | Role in this template                                                                                     | Install                                                                                                                   | When needed?                                           |
-| -------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| **Go** `>=1.21`      | Required to install `osv-scanner` via `go install` (`audit` job of `quality.yml` + `npm run osv` locally) | https://go.dev/dl/ or `brew install go` / `apt install golang`                                                            | `npm run osv`, `npm run osv:html`                      |
-| **osv-scanner**      | Vulnerability scanning (`npm run osv`) — Go binary `github.com/google/osv-scanner/v2`                     | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `npm run osv*` locally; in CI via `setup-go`       |
-| **zizmor** `>=1.30`  | GitHub Actions security audit (`zizmor .`) — not in CI by default                                         | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local audit `zizmor .` / `zizmor --persona pedantic .` |
-| **Graphviz** (`dot`) | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                              | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                         | `npm run depcruise:graph` only                         |
-| **Git** `>=2.40`     | Husky hooks, `semantic-release`                                                                           | https://git-scm.com/downloads                                                                                             | always                                                 |
+| Tool             | Role in this template                                                                                     | Install                                                                                                                   | When needed?                                           |
+| ---------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Go `>=1.21`      | Required to install `osv-scanner` via `go install` (`audit` job of `quality.yml` + `npm run osv` locally) | https://go.dev/dl/ or `brew install go` / `apt install golang`                                                            | `npm run osv`, `npm run osv:html`                      |
+| osv-scanner      | Vulnerability scanning (`npm run osv`), Go binary `github.com/google/osv-scanner/v2`                      | `go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest` then `export PATH=$PATH:$(go env GOPATH)/bin`        | any `npm run osv*` locally; in CI via `setup-go`       |
+| zizmor `>=1.30`  | GitHub Actions security audit (`zizmor .`), not in CI by default                                          | `cargo install zizmor` · `pipx install zizmor` · `brew install zizmor` · binary at `github.com/woodruffw/zizmor/releases` | local audit `zizmor .` / `zizmor --persona pedantic .` |
+| Graphviz (`dot`) | Generates `dependency-graph.svg` (`npm run depcruise:graph`)                                              | `brew install graphviz` / `apt install graphviz` / https://graphviz.org/download/                                         | `npm run depcruise:graph` only                         |
+| Git `>=2.40`     | Husky hooks, `semantic-release`                                                                           | https://git-scm.com/downloads                                                                                             | always                                                 |
 
-> **Tip:** verify locally with `go version && osv-scanner --version && zizmor --version && dot -V`
+> Verify locally with `go version && osv-scanner --version && zizmor --version && dot -V`
 
 [↑ Back to top](#table-of-contents)
 
 ---
 
 <!--
-  Architecture — describe the project's architecture in a paragraph,
+  Architecture: describe the project's architecture in a paragraph,
   then link or embed a diagram (Mermaid, Excalidraw, draw.io, etc.).
   If this is a library, explain how it fits into a consumer's project.
 -->
@@ -175,7 +177,7 @@ _[legend]_
 
 ### Dependency Graph
 
-Rules defined in [`.dependency-cruiser.cjs`](./.dependency-cruiser.cjs) (`no-circular`, `no-orphans`, `no-non-package-json`, `not-to-dev-dep`, …) — check with:
+Rules defined in [`.dependency-cruiser.cjs`](./.dependency-cruiser.cjs) (`no-circular`, `no-orphans`, `no-non-package-json`, `not-to-dev-dep`, …). Check with:
 
 ```bash
 npm run depcruise
@@ -190,20 +192,20 @@ npm run depcruise:graph
 
 ![Dependency graph](./dependency-graph.svg)
 
-> The SVG is committed — regenerate it after any structural change in `src/`.
+> The SVG is committed; regenerate it after any structural change in `src/`.
 
 [↑ Back to top](#table-of-contents)
 
 ---
 
 <!--
-  Features — list key features as bullet points. Keep descriptions short
+  Features: list key features as bullet points. Keep descriptions short
   (one sentence each). Lead with the most important or differentiating feature.
 -->
 
 ## Features
 
-- **[FEATURE_NAME]** — [FEATURE_DESCRIPTION]
+- **[FEATURE_NAME]**: [FEATURE_DESCRIPTION]
 
 [... Repeat for each feature]
 [↑ Back to top](#table-of-contents)
@@ -211,15 +213,15 @@ npm run depcruise:graph
 ---
 
 <!--
-  Prerequisites — list what the consumer must have installed to use this project.
+  Prerequisites: list what the consumer must have installed to use this project.
   Replace versions with your stack. Keep the table if you rely on external binaries.
 -->
 
 ## Prerequisites
 
-- **Node.js** `>= [NODE_VERSION]` (see `.nvmrc`)
-- **Package manager:** `[PACKAGE_MANAGER]` `>= [VERSION]`
-- **Git** `>= 2.40` — Husky hooks, `semantic-release`, docs auto-commit
+- Node.js `>= [NODE_VERSION]` (see `.nvmrc`)
+- Package manager: `[PACKAGE_MANAGER]` `>= [VERSION]`
+- Git `>= 2.40`: Husky hooks, `semantic-release`, docs auto-commit
 
 [↑ Back to top](#table-of-contents)
 
@@ -230,7 +232,7 @@ npm run depcruise:graph
 ### Installation
 
 <!--
-  Installation commands — repeat the code block for each supported
+  Installation commands: repeat the code block for each supported
   package manager / environment (npm, yarn, pnpm, pip, cargo, brew, etc.).
 -->
 
@@ -240,9 +242,9 @@ npm run depcruise:graph
 [... Repeat for each environment or installation tool]
 ```
 
-<!-- Peer dependencies — list any packages the consumer must install separately. Omit this block if there are none. -->
+<!-- Peer dependencies: list any packages the consumer must install separately. Omit this block if there are none. -->
 
-**Peer dependencies:**
+Peer dependencies:
 
 ```bash
 [dependency]
@@ -283,7 +285,7 @@ console.log(hello()); // "hello world!"
 
 | Mode           | `package.json:private` | `.releaserc.json:npmPublish` | npm Trusted Publisher                                                                            | Result                                                            |
 | -------------- | ---------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| Default (safe) | `true`                 | `false`                      | —                                                                                                | GitHub attestations only (SLSA L2): `dist/**` + SBOM via Sigstore |
+| Default (safe) | `true`                 | `false`                      | none                                                                                             | GitHub attestations only (SLSA L2): `dist/**` + SBOM via Sigstore |
 | Full-security  | `false`                | `true`                       | Add on npmjs.com → package Settings → Trusted Publishers → `owner/repo` + workflow `release.yml` | npm provenance (SLSA L3) via OIDC, no `NPM_TOKEN` needed          |
 
 [↑ Back to top](#table-of-contents)
@@ -291,7 +293,7 @@ console.log(hello()); // "hello world!"
 ---
 
 <!--
-  Optional section — File Structure & Naming conventions.
+  Optional section: File Structure & Naming conventions.
   Include if the project has many files or naming conventions worth documenting.
   Show a text-based tree of the project directory.
 -->
@@ -303,7 +305,7 @@ console.log(hello()); // "hello world!"
 [text-based tree graph of the project]
 ```
 
-**Naming conventions:**
+Naming conventions:
 
 - [Scope]: `[format]`
   [... Repeat for each convention]
@@ -316,14 +318,14 @@ console.log(hello()); // "hello world!"
 
 ## Documentation
 
-Full documentation, usage guides, and reference materials are available in the [`docs/`](./docs) directory.
+Full documentation, usage guides, and reference materials live in the [`docs/`](./docs) directory.
 
 [↑ Back to top](#table-of-contents)
 
 ---
 
 <!--
-  FAQ — repeat the <details> block for each frequently asked question.
+  FAQ: repeat the <details> block for each frequently asked question.
   Keep answers concise. Link to full docs for longer explanations.
 -->
 
@@ -344,7 +346,7 @@ Full documentation, usage guides, and reference materials are available in the [
 ---
 
 <!--
-  Troubleshooting — repeat the <details> block for each known issue
+  Troubleshooting: repeat the <details> block for each known issue
   and its workaround or solution. Include error messages if applicable.
 -->
 
@@ -365,7 +367,7 @@ Full documentation, usage guides, and reference materials are available in the [
 ---
 
 <!--
-  Resources — useful external links: official docs of dependencies,
+  Resources: useful external links, such as official docs of dependencies,
   related tools, tutorials, blog posts, or videos.
 -->
 
@@ -380,7 +382,7 @@ Full documentation, usage guides, and reference materials are available in the [
 ---
 
 <!--
-  Community — links to your community spaces. Fill in actual handles / URLs.
+  Community: links to your community spaces. Fill in actual handles / URLs.
   Examples: GitHub Discussions, Discord server, Twitter/X, Reddit, etc.
 -->
 
@@ -394,7 +396,7 @@ Full documentation, usage guides, and reference materials are available in the [
 ---
 
 <!--
-  Contact — direct ways to reach the maintainer(s).
+  Contact: direct ways to reach the maintainer(s).
   Fill in your Discord ID, GitHub profile URL, email, etc.
 -->
 
@@ -415,7 +417,7 @@ conventions, and pull-request flow, and our
 
 ### Contributors
 
-<!-- Auto-generated contributor list via contrib.rocks — replace [OWNER]/[REPO] -->
+<!-- Auto-generated contributor list via contrib.rocks; replace [OWNER]/[REPO] -->
 
 ![Contributors](https://contrib.rocks/image?repo=[OWNER]/[REPO])
 
@@ -424,7 +426,7 @@ conventions, and pull-request flow, and our
 ---
 
 <!--
-  Acknowledgments — credit libraries, tools, articles, or people that
+  Acknowledgments: credit libraries, tools, articles, or people that
   inspired or directly helped this project. Be specific when possible.
 -->
 
@@ -440,7 +442,7 @@ conventions, and pull-request flow, and our
 
 ---
 
-<!-- License — replace with your actual license type and link to the license file -->
+<!-- License: replace with your actual license type and link to the license file -->
 
 ## License
 

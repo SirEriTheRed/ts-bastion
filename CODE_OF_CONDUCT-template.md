@@ -14,7 +14,7 @@ from this template. The live CODE_OF_CONDUCT.md covers this repository; this fil
 is meant to cover YOUR project.
 
 HOW TO USE IT
-1. Replace every [BRACKETED PLACEHOLDER], especially [CODE_OF_CONDUCT_EMAIL] —
+1. Replace every [BRACKETED PLACEHOLDER], especially [CODE_OF_CONDUCT_EMAIL]:
    that's where people report conduct issues privately.
 2. Read the text and adjust anything that doesn't match how you want to run the
    project. A code of conduct you haven't read is a code of conduct nobody follows.
@@ -75,15 +75,15 @@ The following behaviors are not acceptable in our community:
 
 ## 4. Where This Applies (Scope of Application)
 
-This code applies in all community spaces — issues, pull requests, discussions, chat, and events
-— and whenever someone is officially representing the community, such as when using an official
-email address, posting from an official social account, or acting as an appointed representative
-at an online or offline gathering.
+This code applies in all community spaces (issues, pull requests, discussions, chat, and
+events) and whenever someone is officially representing the community: using an official
+email address, posting from an official social account, or acting as an appointed
+representative at an online or offline gathering.
 
 ## 5. If Something Happens (Reporting Procedures)
 
 Not every disagreement is a violation, but if something feels off, please tell us early so we can
-help before it grows. You can reach the maintainers at **[CODE_OF_CONDUCT_EMAIL]**. For
+help before it grows. You can reach the maintainers at [CODE_OF_CONDUCT_EMAIL]. For
 private or security-sensitive reports, open a
 [draft security advisory](https://github.com/[OWNER]/[REPO]/security/advisories/new) instead of a
 public issue. Every report is reviewed promptly and fairly. We respect the privacy and safety of
