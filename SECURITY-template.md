@@ -47,11 +47,11 @@ We release patches for security vulnerabilities. Only the latest `main` is activ
 
 ## Reporting a Vulnerability
 
-**Do not open a public issue.** Please report privately so we can fix it before disclosure.
+Do not open a public issue. Report privately so we can fix it before disclosure.
 
-- **Preferred:** open a
+- Preferred: open a
   [draft security advisory](https://github.com/[OWNER]/[REPO]/security/advisories/new)
-- **Alternative:** email **[SECURITY_EMAIL]**
+- Alternative: email [SECURITY_EMAIL]
 
 Please include:
 
@@ -79,12 +79,12 @@ for details:
 
 - `npm audit --omit=dev --audit-level=high` (blocking in CI `audit` job; production dependencies
   only; full-tree `npm audit --audit-level=critical` also runs, reporting all findings)
-- `osv-scanner` — locally `npm run osv` / `npm run osv:html` → `reports/osv-report.html`; in CI
+- `osv-scanner`: locally `npm run osv` / `npm run osv:html` → `reports/osv-report.html`; in CI
   via `google/osv-scanner-action@v2` → `reports/osv.sarif` → GitHub Code Scanning; unfixable
   dev-only findings suppressed by ID in `osv-scanner.toml`
-- `secretlint` — `npm run secretlint` / `npm run secretlint:mask` plus lint-staged on every commit
-- `lockfile-lint` — `npm run lockfile-lint` validates `package-lock.json`
-- `zizmor` — optional `zizmor .` for GitHub Actions hardening (`pipx` / `cargo` / `brew`)
+- `secretlint`: `npm run secretlint` / `npm run secretlint:mask` plus lint-staged on every commit
+- `lockfile-lint`: `npm run lockfile-lint` validates `package-lock.json`
+- `zizmor`: optional `zizmor .` for GitHub Actions hardening (`pipx` / `cargo` / `brew`)
 
 ## Acknowledgments
 
