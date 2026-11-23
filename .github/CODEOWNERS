@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 ts-bastion contributors
+# SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+# CODEOWNERS — automatic review routing for pull requests.
+#
+# GitHub reads this file and requests a review from the listed owner(s)
+# whenever a PR touches a matching path. Last matching pattern wins, so
+# put the broad rule (*) first and the specific ones after it.
+#
+# To make reviews mandatory (merge blocked until an owner approves),
+# enable "Require review from Code Owners" in Settings → Branches →
+# branch protection rules. Without it, this file only pings reviewers.
+#
+# Syntax:
+#   <path pattern>   @user [@user2 ...] [@org/team]
+#   *                matches every file
+#   docs/            matches everything under docs/
+#   *.ts             matches every TypeScript file
+#   # comment        ignored by GitHub
+
+# Default owner: everything not matched below.
+*                      @SirEriTheRed
+
+# CI, workflows and community health files.
+.github/               @SirEriTheRed
+
+# Source code and its tests.
+src/                   @SirEriTheRed
+tests/                 @SirEriTheRed
+
+# Hand-written documentation (generated docs/api/ needs no review).
+docs/                  @SirEriTheRed
+
+# Release-critical files: a bad merge here ships a bad release.
+package.json           @SirEriTheRed
+package-lock.json      @SirEriTheRed
+.releaserc.json        @SirEriTheRed
