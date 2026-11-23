@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.3...v1.2.0) (2026-11-23)
+
+### Bug Fixes
+
+- **ci:** audit the full dependency tree for critical vulnerabilities ([b9bdc48](https://github.com/SirEriTheRed/ts-bastion/commit/b9bdc48f49e150c33d58369ee914aa77858f6f47))
+- **ci:** correct zizmor ignore to self-repository ([59a8a85](https://github.com/SirEriTheRed/ts-bastion/commit/59a8a85e5f7c3492dc77b6d12aa1fede86c42a4c))
+- **ci:** make the osv scanner blocking ([deb8fd4](https://github.com/SirEriTheRed/ts-bastion/commit/deb8fd4f263dc6281c751f090d140a70090a5189))
+- **ci:** run editorconfig-checker from dev dependencies ([de09ac8](https://github.com/SirEriTheRed/ts-bastion/commit/de09ac8a3ddd85b7d2d9eb77f25229b59fdeb92a))
+- **ci:** skip docs job for fork pull requests ([1bafcdf](https://github.com/SirEriTheRed/ts-bastion/commit/1bafcdffabb7c8c125c0e8784fea4d04b6c33235))
+- **cspell:** ignore the reports output directory ([1ae568d](https://github.com/SirEriTheRed/ts-bastion/commit/1ae568d68db15cd54e916b229aaea451e27fd9b1))
+- **osv:** suppress unfixable katex and postcss-selector-parser advisories ([4eae9ff](https://github.com/SirEriTheRed/ts-bastion/commit/4eae9ffda028d8d5725bfb28b3ee634e056ce785))
+- **release:** fail when the next version cannot be parsed ([28323e9](https://github.com/SirEriTheRed/ts-bastion/commit/28323e985b1765aa7b4c4dbeee692e1db150dbea))
+- remove the dead codeql self-install and broken fallback ([12bbe0c](https://github.com/SirEriTheRed/ts-bastion/commit/12bbe0cc6107d8d0432b88b17c9b2d291cc9c96d))
+
+### Features
+
+- add PR title semantic validation workflow ([#81](https://github.com/SirEriTheRed/ts-bastion/issues/81)) ([c421cab](https://github.com/SirEriTheRed/ts-bastion/commit/c421cabd3c8fba916008108ec50051f092860263))
+
 ## [1.1.3](https://github.com/SirEriTheRed/ts-bastion/compare/v1.1.2...v1.1.3) (2026-10-07)
 
 ### Bug Fixes
