@@ -125,6 +125,7 @@ audits (`osv`, `zizmor`, `audit:signatures`) are documented there too.
 ## Pull requests
 
 1. Open the PR against `main`, link the issue it closes, and say what changed and why.
+   The [PR template](./.github/pull_request_template.md) pre-fills the sections for you.
 2. CI has to pass: the `check`, `commitlint`, and `audit` jobs.
 3. Review feedback lands as new commits; maintainers squash on merge.
 
