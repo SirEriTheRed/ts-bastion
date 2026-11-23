@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2026 ts-bastion contributors
+# SPDX-FileContributor: EriTheRed aka Azelann Borde <azelann.borde@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+
+name: PR labeler
+
+permissions: {}
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  label:
+    name: Label PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Fork PRs get a read-only token; dependabot PRs already carry their own
+    # labels from dependabot.yml — skip both instead of failing the check.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.actor != 'dependabot[bot]'
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
