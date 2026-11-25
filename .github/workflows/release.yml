@@ -168,6 +168,14 @@ jobs:
           # evaluates it. The PR's own pull_request CodeQL run is a harmless
           # duplicate.
           BRANCH="release/v$VERSION"
+          # The branch is deleted when the release PR merges, but a later push
+          # to main can re-detect the same version (its tag is not reachable
+          # from main yet) - dispatching on a gone branch fails with "No ref
+          # found", so skip instead.
+          if ! git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "Release branch $BRANCH no longer exists - skipping CodeQL dispatch."
+            exit 0
+          fi
           gh workflow run codeql.yml --ref "$BRANCH"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
